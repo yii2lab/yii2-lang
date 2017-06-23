@@ -2,11 +2,11 @@
 /**
  * Language component
  */
-namespace yii2lab\lang\components;
+namespace yii2module\lang\components;
 
 use Yii;
 use yii\base\Component;
-use yii2lab\lang\helpers\drivers\Cookie as Store;
+use yii2module\lang\helpers\drivers\Cookie as Store;
 
 /**
  * LngComponent

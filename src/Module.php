@@ -1,6 +1,6 @@
 <?php
 
-namespace yii2lab\lang;
+namespace yii2module\lang;
 
 use yii\base\Module as YiiModule;
 

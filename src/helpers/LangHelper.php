@@ -1,5 +1,5 @@
 <?php
-namespace yii2lab\lang\helpers;
+namespace yii2module\lang\helpers;
 
 use Yii;
 use yii\helpers\FileHelper;

@@ -1,6 +1,6 @@
 <?php
 
-namespace yii2lab\lang\drivers\store;
+namespace yii2module\lang\drivers\store;
 
 use Yii;
 use yii\base\Component;

@@ -1,5 +1,5 @@
 {
-    "name": "yii2lab/yii2-lang",
+    "name": "yii2module/yii2-lang",
     "type": "yii2-extension",
     "authors": [
         {
@@ -10,7 +10,7 @@
 	"minimum-stability": "dev",
 	"autoload": {
         "psr-4": {
-             "yii2lab\\lang\\": "src"
+             "yii2module\\lang\\": "src"
          }
     },
     "require": {}
