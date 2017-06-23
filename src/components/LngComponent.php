@@ -49,7 +49,7 @@ class LngComponent extends Component
 	
 	public function init()
 	{
-		require_once(Yii::getAlias('@woop/module/lang/helpers/Func.php'));
+		require_once(Yii::getAlias('@yii2module/lang/helpers/Func.php'));
 		if(YII_ENV_TEST) {
 			$this->languages[] = [
 				'title' => 'Source',
