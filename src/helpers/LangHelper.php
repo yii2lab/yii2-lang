@@ -3,7 +3,7 @@ namespace yii2module\lang\helpers;
 
 use Yii;
 use yii\helpers\FileHelper;
-use woop\foundation\helpers\Helper;
+use yii2lab\helpers\Helper;
 
 class LangHelper {
 	
