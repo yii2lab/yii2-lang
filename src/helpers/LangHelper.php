@@ -4,6 +4,7 @@ namespace yii2module\lang\helpers;
 use Yii;
 use yii\helpers\FileHelper;
 use yii2lab\helpers\Helper;
+use Exception;
 
 class LangHelper {
 	
@@ -52,7 +53,14 @@ class LangHelper {
 	{
 		$moduleClass = self::getModuleClass($moduleName);
 		$langDir = self::getModuleLangDir($moduleClass);
-		$dir = Yii::getAlias('@' . $langDir);
+		
+		if($langDir[0] == '@') {
+			try {
+				$dir = Yii::getAlias($langDir);
+			} catch(Exception $e) {}
+		} else {
+			$dir = ROOT_DIR . DS . $langDir;
+		}
 		if (is_dir($dir)) {
 			Yii::$app->i18n->translations['modules/'.$moduleName.'/*'] = [
 				'class'		  => 'yii\i18n\PhpMessageSource',
@@ -70,7 +78,7 @@ class LangHelper {
 		} else {
 			$moduleClassFile = str_replace('\\', '/', $moduleClass);
 			$moduleDir = pathinfo($moduleClassFile, PATHINFO_DIRNAME);
-			$langDir = $moduleDir . '/messages';
+			$langDir = '@' . $moduleDir . '/messages';
 		}
 		return $langDir;
 	}
