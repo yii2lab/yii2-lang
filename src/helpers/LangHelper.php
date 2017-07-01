@@ -12,7 +12,7 @@ class LangHelper {
 	{
 		$nameArr = explode('/', $name);
 		$moduleName = $nameArr[0];
-		$fileName = $nameArr[1] ?: 'main';
+		$fileName = isset($nameArr[1]) ? $nameArr[1] : 'main';
 		if($moduleName == 'this' || empty($moduleName)) {
 			$moduleName = Yii::$app->controller->module->id;
 		}
