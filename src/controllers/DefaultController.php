@@ -24,11 +24,10 @@ class DefaultController extends Controller
 		];
 	}
 
-	function actionChange() {
+	function actionChange($language) {
 		$request = Yii::$app->request;
-		$body = $request->getBodyParams();
-		if(!empty($body['language'])) {
-			Yii::$app->lng->saveLanguage($body['language']);
+		if(!empty($language)) {
+			Yii::$app->lng->saveLanguage($language);
 			return $this->redirect($request->referrer);
 		}
 	}

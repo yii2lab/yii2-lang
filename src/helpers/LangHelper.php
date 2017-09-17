@@ -2,12 +2,33 @@
 namespace yii2module\lang\helpers;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
-use yii2lab\helpers\Helper;
 use Exception;
+use yii2lab\helpers\MenuHelper;
 
 class LangHelper {
-	
+
+	public static function current()
+	{
+		$all = ArrayHelper::map(Yii::$app->lng->getAllLanguages(), 'code', 'title');
+		return $all[Yii::$app->language];
+	}
+
+	public static function allForMenu()
+	{
+		$all = ArrayHelper::map(Yii::$app->lng->getAllLanguages(), 'code', 'title');
+		$items = [];
+		foreach($all as $name => $title) {
+			$items[] = [
+				'label' => $title,
+				'url' => 'lang/default/change?language=' . $name,
+				'linkOptions' => ['data-method' => 'post'],
+			];
+		}
+		return MenuHelper::gen($items);
+	}
+
 	public static function module($name, $message, $params = [], $language = null)
 	{
 		$nameArr = explode('/', $name);
