@@ -12,9 +12,16 @@ class LangHelper {
 	public static function current()
 	{
 		$all = ArrayHelper::map(Yii::$app->lng->getAllLanguages(), 'code', 'title');
-		return $all[Yii::$app->language];
+		$lang = self::locale2lang(Yii::$app->language);
+		return $all[$lang];
 	}
-
+	
+	public static function locale2lang($lang)
+	{
+		$langArr = explode('-', $lang);
+		return $langArr[0];
+	}
+	
 	public static function allForMenu()
 	{
 		$all = ArrayHelper::map(Yii::$app->lng->getAllLanguages(), 'code', 'title');
