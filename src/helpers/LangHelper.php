@@ -11,6 +11,16 @@ use yii2lab\helpers\MenuHelper;
 
 class LangHelper {
 	
+	public static function extract($message) {
+		if(empty($message)) {
+			return '';
+		}
+		if(is_array($message)) {
+			$message = t($message[0], $message[1]);
+		}
+		return $message;
+	}
+	
 	public static function current() {
 		$all = ArrayHelper::map(Yii::$app->lng->getAllLanguages(), 'code', 'title');
 		$lang = self::locale2lang(Yii::$app->language);
