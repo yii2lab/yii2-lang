@@ -1,6 +1,6 @@
 <?php
 
-namespace yii2module\lang\drivers\store;
+namespace yii2module\lang\domain\drivers\store;
 
 use Yii;
 use yii\web\Cookie as YiiCookie;

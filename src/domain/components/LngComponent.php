@@ -2,11 +2,11 @@
 /**
  * Language component
  */
-namespace yii2module\lang\components;
+namespace yii2module\lang\domain\components;
 
 use Yii;
 use yii\base\Component;
-use yii2module\lang\helpers\drivers\Cookie as Store;
+use yii2module\lang\domain\helpers\drivers\Cookie as Store;
 
 /**
  * LngComponent
@@ -49,7 +49,7 @@ class LngComponent extends Component
 	
 	public function init()
 	{
-		require_once(Yii::getAlias('@yii2module/lang/helpers/Func.php'));
+		require_once(Yii::getAlias('@yii2module/lang/domain/helpers/Func.php'));
 		if(YII_ENV_TEST) {
 			$this->languages[] = [
 				'title' => 'Source',

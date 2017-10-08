@@ -1,6 +1,6 @@
 <?php
 
-use yii2module\lang\helpers\LangHelper;
+use yii2module\lang\domain\helpers\LangHelper;
 
 function t($category, $message, $params = [], $language = null) {
 	/* if(YII_ENV_TEST) {

@@ -1,5 +1,5 @@
 <?php
-namespace yii2module\lang\helpers;
+namespace yii2module\lang\domain\helpers;
 
 use Exception;
 use GuzzleHttp\Exception\ServerException;

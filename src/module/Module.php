@@ -1,6 +1,6 @@
 <?php
 
-namespace yii2module\lang;
+namespace yii2module\lang\module;
 
 use yii\base\Module as YiiModule;
 
@@ -9,5 +9,5 @@ use yii\base\Module as YiiModule;
  */
 class Module extends YiiModule
 {
-	
+	public static $langDir = '@yii2module/lang/domain/messages';
 }

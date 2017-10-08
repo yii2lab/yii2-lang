@@ -2,7 +2,7 @@
 
 use yii\bootstrap\Dropdown;
 use yii\helpers\Html;
-use yii2module\lang\helpers\LangHelper;
+use yii2module\lang\domain\helpers\LangHelper;
 
 ?>
 
