@@ -96,10 +96,7 @@ class LangHelper {
 		}
 		
 		if($langDir[0] == '@') {
-			try {
-				$dir = Yii::getAlias($langDir);
-			} catch(Exception $e) {
-			}
+			$dir = Yii::getAlias($langDir);
 		} else {
 			$dir = ROOT_DIR . DS . $langDir;
 		}
