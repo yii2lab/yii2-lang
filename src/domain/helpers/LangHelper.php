@@ -87,6 +87,14 @@ class LangHelper {
 		$moduleClass = self::getModuleClass($moduleName);
 		$langDir = self::getModuleLangDir($moduleClass);
 		
+		if(empty($langDir)) {
+			$domain = ArrayHelper::getValue(Yii::$app, $moduleName);
+			$langDir = $domain->path;
+			$langDir = str_replace('\\', '/', $langDir);
+			$langDir = $langDir . '/messages';
+			$langDir = '@' . $langDir;
+		}
+		
 		if($langDir[0] == '@') {
 			try {
 				$dir = Yii::getAlias($langDir);
@@ -107,7 +115,8 @@ class LangHelper {
 	
 	private static function getModuleLangDir($moduleClass) {
 		if(!class_exists($moduleClass)) {
-			Throw new ServerErrorHttpException('module_not_found');
+			//Throw new ServerErrorHttpException('module_not_found');
+			return null;
 		}
 		if(property_exists($moduleClass, 'langDir') && !empty($moduleClass::$langDir)) {
 			$langDir = $moduleClass::$langDir;
