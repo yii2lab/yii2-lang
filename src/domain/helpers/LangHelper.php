@@ -121,9 +121,9 @@ class LangHelper {
 		if(property_exists($moduleClass, 'langDir') && !empty($moduleClass::$langDir)) {
 			$langDir = $moduleClass::$langDir;
 		} else {
-			$moduleClassFile = str_replace('\\', '/', $moduleClass);
+			/* $moduleClassFile = str_replace('\\', '/', $moduleClass);
 			$moduleDir = pathinfo($moduleClassFile, PATHINFO_DIRNAME);
-			$langDir = '@' . $moduleDir . '/messages';
+			$langDir = '@' . $moduleDir . '/messages'; */
 		}
 		return $langDir;
 		
