@@ -7,7 +7,7 @@ use yii\web\Cookie as YiiCookie;
 
 class Cookies implements StoreInterface {
 	
-	public $key;
+	public $key = 'language';
 	public $extra;
 	
 	public function set($value) {

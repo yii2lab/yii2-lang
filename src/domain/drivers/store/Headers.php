@@ -7,7 +7,7 @@ use yii\base\Component;
 
 class Headers extends Component implements StoreInterface {
 
-	public $key;
+	public $key = 'language';
 	public $extra;
 	
 	public function set($value) {
