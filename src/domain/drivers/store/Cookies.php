@@ -8,7 +8,10 @@ use yii\web\Cookie as YiiCookie;
 class Cookies implements StoreInterface {
 	
 	public $key = 'language';
-	public $extra;
+	public $extra = [
+		'expireDays' => 30,
+		'cookieDomain' => '',
+	];
 	
 	public function set($value) {
 		$cookie = new YiiCookie([
@@ -34,7 +37,7 @@ class Cookies implements StoreInterface {
 
 	public function remove()
 	{
-		return Yii::$app->response->cookies->remove($this->key);
+		Yii::$app->response->cookies->remove($this->key);
 	}
 	
 	private function getCookieDomain()

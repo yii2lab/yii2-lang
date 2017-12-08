@@ -102,8 +102,7 @@ class LangHelper {
 		}
 		if(is_dir($dir)) {
 			Yii::$app->i18n->translations[ 'modules/' . $moduleName . '/*' ] = [
-				'class' => 'yii\i18n\PhpMessageSource',
-				'sourceLanguage' => 'xx-XX',
+				'class' => 'yii2module\lang\domain\i18n\PhpMessageSource',
 				'basePath' => $dir,
 				'fileMap' => self::genFileMap($moduleName, $dir),
 			];

@@ -6,6 +6,7 @@ namespace yii2module\lang\domain\components;
 
 use Yii;
 use yii\base\Component;
+use yii2module\lang\domain\enums\LanguageEnum;
 use yii2module\lang\domain\helpers\drivers\Cookie as Store;
 
 /**
@@ -53,8 +54,8 @@ class LngComponent extends Component
 		if(YII_ENV_TEST) {
 			$this->languages[] = [
 				'title' => 'Source',
-				'code' => 'xx',
-				'locale' => 'xx-XX',
+				'code' => LanguageEnum::code(LanguageEnum::SOURCE),
+				'locale' => LanguageEnum::SOURCE,
 				'is_main' => false,
 			];
 		}
