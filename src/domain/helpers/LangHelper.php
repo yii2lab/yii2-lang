@@ -5,7 +5,6 @@ namespace yii2module\lang\domain\helpers;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
-use yii2lab\helpers\MenuHelper;
 
 class LangHelper {
 	
@@ -25,22 +24,9 @@ class LangHelper {
 		return $all[ $lang ];
 	}
 	
-	public static function locale2lang($lang) {
+	private static function locale2lang($lang) {
 		$langArr = explode('-', $lang);
 		return $langArr[0];
-	}
-	
-	public static function allForMenu() {
-		$all = ArrayHelper::map(Yii::$app->lng->getAllLanguages(), 'code', 'title');
-		$items = [];
-		foreach($all as $name => $title) {
-			$items[] = [
-				'label' => $title,
-				'url' => 'lang/default/change?language=' . $name,
-				'linkOptions' => ['data-method' => 'post'],
-			];
-		}
-		return MenuHelper::gen($items);
 	}
 	
 	public static function module($name, $message, $params = [], $language = null) {

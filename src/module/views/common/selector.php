@@ -1,21 +1,9 @@
 <?php
 
-use yii\bootstrap\Dropdown;
-use yii\helpers\Html;
-use yii2module\lang\domain\helpers\LangHelper;
+use yii2module\lang\widgets\LangSelector;
 
 ?>
 
 <span class="dropup">
-	<?= Html::a(
-		LangHelper::current() . '<b class="caret"></b>',
-		'#',
-		[
-			'class' => 'dropdown-toggle',
-			'data-toggle' => 'dropdown',
-		]
-	) ?>
-	<?= Dropdown::widget([
-		'items' => LangHelper::allForMenu(),
-	]) ?>
+	<?= LangSelector::widget() ?>
 </span>
