@@ -8,12 +8,18 @@ use yii\helpers\FileHelper;
 
 class LangHelper {
 	
+	public static function loadFunc() {
+		$funcAlias = '@yii2module/lang/domain/helpers/Func.php';
+		$funcFilename = Yii::getAlias($funcAlias);
+		require_once($funcFilename);
+	}
+	
 	public static function extract($message) {
 		if(empty($message)) {
 			return '';
 		}
 		if(is_array($message)) {
-			$message = t($message[0], $message[1]);
+			$message = Yii::t($message[0], $message[1]);
 		}
 		return $message;
 	}

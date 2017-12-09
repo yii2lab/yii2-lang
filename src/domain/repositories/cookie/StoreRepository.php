@@ -1,11 +1,13 @@
 <?php
 
-namespace yii2module\lang\domain\drivers\store;
+namespace yii2module\lang\domain\repositories\cookie;
 
 use Yii;
+use yii2lab\domain\repositories\BaseRepository;
 use yii\web\Cookie as YiiCookie;
+use yii2module\lang\domain\interfaces\repositories\StoreInterface;
 
-class Cookies implements StoreInterface {
+class StoreRepository extends BaseRepository implements StoreInterface {
 	
 	public $key = 'language';
 	public $extra = [
@@ -30,11 +32,11 @@ class Cookies implements StoreInterface {
 		}
 		return $value;
 	}
-
+	
 	public function has() {
 		return Yii::$app->response->cookies->has($this->key);
 	}
-
+	
 	public function remove()
 	{
 		Yii::$app->response->cookies->remove($this->key);
@@ -49,5 +51,4 @@ class Cookies implements StoreInterface {
 	{
 		return !empty($this->extra['expireDays']) ? $this->extra['expireDays'] : 365;
 	}
-	
 }

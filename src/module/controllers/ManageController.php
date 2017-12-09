@@ -26,9 +26,6 @@ class ManageController extends Controller
 			'sort' => [
 				'attributes' => ['title', 'code', 'locale', 'is_main'],
 			],
-			'pagination' => [
-				'pageSize' => 1,
-			],
 		]);
 		return $this->render('index', compact('dataProvider'));
 	}
