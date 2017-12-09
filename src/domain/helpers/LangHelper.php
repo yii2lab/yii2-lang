@@ -1,12 +1,10 @@
 <?php
+
 namespace yii2module\lang\domain\helpers;
 
-use Exception;
-use GuzzleHttp\Exception\ServerException;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
-use yii\web\ServerErrorHttpException;
 use yii2lab\helpers\MenuHelper;
 
 class LangHelper {
@@ -83,11 +81,14 @@ class LangHelper {
 		return $map;
 	}
 	
-	private static function registerModule($moduleName) {
+	public static function registerModule($moduleName) {
 		$moduleClass = self::getModuleClass($moduleName);
 		$langDir = self::getModuleLangDir($moduleClass);
 		
 		if(empty($langDir)) {
+			if(!Yii::$app->has($moduleName)) {
+				return false;
+			}
 			$domain = ArrayHelper::getValue(Yii::$app, $moduleName);
 			$langDir = $domain->path;
 			$langDir = str_replace('\\', '/', $langDir);
@@ -102,7 +103,8 @@ class LangHelper {
 		}
 		if(is_dir($dir)) {
 			Yii::$app->i18n->translations[ 'modules/' . $moduleName . '/*' ] = [
-				'class' => 'yii2module\lang\domain\i18n\PhpMessageSource',
+				'class' => 'yii\i18n\PhpMessageSource',
+				'sourceLanguage' => 'xx-XX',
 				'basePath' => $dir,
 				'fileMap' => self::genFileMap($moduleName, $dir),
 			];
