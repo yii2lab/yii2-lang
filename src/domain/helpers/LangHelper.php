@@ -8,12 +8,6 @@ use yii\helpers\FileHelper;
 
 class LangHelper {
 	
-	public static function loadFunc() {
-		$funcAlias = '@yii2module/lang/domain/helpers/Func.php';
-		$funcFilename = Yii::getAlias($funcAlias);
-		require_once($funcFilename);
-	}
-	
 	public static function extract($message) {
 		if(empty($message)) {
 			return '';
@@ -41,30 +35,6 @@ class LangHelper {
 			self::registerModule($moduleName);
 		}
 		return Yii::t($pathName . '/' . $fileName, $message, $params, $language);
-	}
-	
-	private static function getLangFileNames($dir) {
-		$dir = Yii::getAlias($dir);
-		/*if(!is_dir($dir)) {
-			return [];
-		}*/
-		$options['only'][] = '*.php';
-		$fileList = FileHelper::findFiles($dir, $options);
-		$fileList = array_map(function ($file) {
-			return pathinfo($file, PATHINFO_FILENAME);
-		}, $fileList);
-		return $fileList;
-	}
-	
-	private static function genFileMap($moduleName, $dir) {
-		$categoryList = self::getLangFileNames($dir);
-		if(empty($categoryList)) {
-			return [];
-		}
-		foreach($categoryList as $category) {
-			$map[ 'modules/' . $moduleName . '/' . $category ] = $category . '.php';
-		}
-		return $map;
 	}
 	
 	public static function registerModule($moduleName) {
@@ -95,6 +65,30 @@ class LangHelper {
 				'fileMap' => self::genFileMap($moduleName, $dir),
 			];
 		}
+	}
+	
+	private static function getLangFileNames($dir) {
+		$dir = Yii::getAlias($dir);
+		/*if(!is_dir($dir)) {
+			return [];
+		}*/
+		$options['only'][] = '*.php';
+		$fileList = FileHelper::findFiles($dir, $options);
+		$fileList = array_map(function ($file) {
+			return pathinfo($file, PATHINFO_FILENAME);
+		}, $fileList);
+		return $fileList;
+	}
+	
+	private static function genFileMap($moduleName, $dir) {
+		$categoryList = self::getLangFileNames($dir);
+		if(empty($categoryList)) {
+			return [];
+		}
+		foreach($categoryList as $category) {
+			$map[ 'modules/' . $moduleName . '/' . $category ] = $category . '.php';
+		}
+		return $map;
 	}
 	
 	private static function getModuleLangDir($moduleClass) {
