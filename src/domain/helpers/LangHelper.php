@@ -18,13 +18,7 @@ class LangHelper {
 		return $message;
 	}
 	
-	public static function current() {
-		$all = ArrayHelper::map(Yii::$app->lng->getAllLanguages(), 'code', 'title');
-		$lang = self::locale2lang(Yii::$app->language);
-		return $all[ $lang ];
-	}
-	
-	private static function locale2lang($lang) {
+	public static function locale2lang($lang) {
 		$langArr = explode('-', $lang);
 		return $langArr[0];
 	}

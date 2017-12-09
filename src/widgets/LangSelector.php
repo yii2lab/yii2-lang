@@ -7,7 +7,6 @@ use yii\base\Widget;
 use yii\bootstrap\Dropdown;
 use yii\helpers\Html;
 use yii2lab\helpers\MenuHelper;
-use yii2module\lang\domain\helpers\LangHelper;
 
 class LangSelector extends Widget {
 	
@@ -15,7 +14,8 @@ class LangSelector extends Widget {
 	 * Runs the widget
 	 */
 	public function run() {
-		echo Html::a(LangHelper::current() . '<b class="caret"></b>', '#', [
+		$currentEntity = Yii::$app->lang->language->oneCurrent();
+		echo Html::a( $currentEntity->title . '<b class="caret"></b>', '#', [
 			'class' => 'dropdown-toggle',
 			'data-toggle' => 'dropdown',
 		]);
@@ -30,11 +30,11 @@ class LangSelector extends Widget {
 	
 	private function collectionToMenu() {
 		$items = [];
-		$collection = Yii::$app->lng->getAllLanguages();
-		foreach($collection as $item) {
+		$collection = Yii::$app->lang->language->all();
+		foreach($collection as $entity) {
 			$items[] = [
-				'label' => $item['title'],
-				'url' => 'lang/default/change?language=' . $item['code'],
+				'label' => $entity->title,
+				'url' => 'lang/default/change?language=' . $entity->code,
 				'linkOptions' => ['data-method' => 'post'],
 			];
 		}
