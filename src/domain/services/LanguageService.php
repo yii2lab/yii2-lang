@@ -6,13 +6,7 @@ use yii2lab\domain\services\ActiveBaseService;
 
 class LanguageService extends ActiveBaseService {
 	
-	private $isInited = false;
-	
 	public function init() {
-		if($this->isInited) {
-			return;
-		}
-		$this->isInited = true;
 		if(APP != CONSOLE) {
 			$this->repository->initLanguage();
 		}
