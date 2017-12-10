@@ -5,6 +5,7 @@ namespace yii2module\lang\domain\helpers;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
+use yii2lab\helpers\ModuleHelper;
 
 class LangHelper {
 	
@@ -38,7 +39,7 @@ class LangHelper {
 	}
 	
 	public static function registerModule($moduleName) {
-		$moduleClass = self::getModuleClass($moduleName);
+		$moduleClass = ModuleHelper::getClass($moduleName);
 		$langDir = self::getModuleLangDir($moduleClass);
 		
 		if(empty($langDir)) {
@@ -105,17 +106,6 @@ class LangHelper {
 			$langDir = '@' . $moduleDir . '/messages'; */
 		}
 		return $langDir;
-		
-		
 	}
 	
-	private static function getModuleClass($moduleName) {
-		$moduleConfig = config('modules.' . $moduleName);
-		if(is_array($moduleConfig)) {
-			$moduleClass = $moduleConfig['class'];
-		} else {
-			$moduleClass = $moduleConfig;
-		}
-		return $moduleClass;
-	}
 }
