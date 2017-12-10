@@ -109,6 +109,7 @@ class LanguageRepository extends ActiveDiscRepository implements LanguageInterfa
 		$locales = ArrayHelper::toArray($locales);
 		foreach ($locales as $language) {
 			$pattern = preg_quote(substr($language, 0, 2), '/');
+			/** @var LanguageEntity $entity */
 			foreach ($collection as $entity) {
 				if (preg_match('/^' . $pattern . '/', $entity->locale)) {
 					return $entity;
@@ -118,6 +119,10 @@ class LanguageRepository extends ActiveDiscRepository implements LanguageInterfa
 		throw new NotFoundHttpException(static::class);
 	}
 	
+	/**
+	 * @return LanguageEntity
+	 * @throws NotFoundHttpException
+	 */
 	private function oneByLocalesOrCodes($value) {
 		try {
 			return $this->oneByCode($value);
