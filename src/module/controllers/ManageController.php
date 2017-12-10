@@ -1,6 +1,7 @@
 <?php
 namespace yii2module\lang\module\controllers;
 
+use common\enums\rbac\PermissionEnum;
 use Yii;
 use yii\data\ArrayDataProvider;
 use yii\web\Controller;
@@ -15,7 +16,7 @@ class ManageController extends Controller
 	public function behaviors()
 	{
 		return [
-			Config::genAccess('lang.manage'),
+			Config::genAccess(PermissionEnum::LANG_MANAGE),
 		];
 	}
 
