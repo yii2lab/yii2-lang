@@ -2,9 +2,13 @@
 
 namespace yii2module\lang\domain\services;
 
+use yii\web\NotFoundHttpException;
+use yii2lab\domain\interfaces\services\ReadInterface;
 use yii2lab\domain\services\ActiveBaseService;
+use yii2module\lang\domain\entities\LanguageEntity;
+use yii2module\lang\domain\interfaces\services\LanguageInterface;
 
-class LanguageService extends ActiveBaseService {
+class LanguageService extends ActiveBaseService implements LanguageInterface, ReadInterface {
 	
 	public function init() {
 		if(APP != CONSOLE) {
@@ -12,18 +16,10 @@ class LanguageService extends ActiveBaseService {
 		}
 	}
 	
-	/*public function oneMain() {
-		return $this->repository->oneMain();
-	}
-	
-	public function isExistsByCode($code) {
-		return $this->repository->isExistsByCode($code);
-	}
-	
-	public function oneByCode($code) {
-		return $this->repository->oneByCode($code);
-	}*/
-	
+	/**
+	 * @return LanguageEntity
+	 * @throws NotFoundHttpException
+	 */
 	public function oneCurrent() {
 		return $this->repository->oneCurrent();
 	}

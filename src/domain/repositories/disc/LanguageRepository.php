@@ -6,15 +6,22 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii2lab\domain\data\Query;
+use yii2lab\domain\interfaces\repositories\ReadInterface;
 use yii2lab\domain\repositories\ActiveDiscRepository;
+use yii2module\lang\domain\entities\LanguageEntity;
 use yii2module\lang\domain\enums\LanguageEnum;
 use yii2module\lang\domain\helpers\LangHelper;
+use yii2module\lang\domain\interfaces\repositories\LanguageInterface;
 
-class LanguageRepository extends ActiveDiscRepository {
+class LanguageRepository extends ActiveDiscRepository implements LanguageInterface, ReadInterface {
 	
 	public $table = 'languages';
 	public $callback;
 	
+	/**
+	 * @return LanguageEntity
+	 * @throws NotFoundHttpException
+	 */
 	public function oneCurrent() {
 		$currentLang = $this->currentLanguage();
 		$entity = $this->oneByCode($currentLang);
@@ -30,6 +37,9 @@ class LanguageRepository extends ActiveDiscRepository {
 		}
 	}
 	
+	/**
+	 * @return LanguageEntity[]
+	 */
 	public function all(Query $query = null) {
 		$collection = parent::all($query);
 		if(YII_ENV_TEST) {
@@ -57,18 +67,29 @@ class LanguageRepository extends ActiveDiscRepository {
 		}
 	}
 	
+	/**
+	 * @return boolean
+	 */
 	private function isExistsByCode($code) {
 		$query = Query::forge();
 		$query->where('code', $code);
 		return $this->isExists($query);
 	}
 	
+	/**
+	 * @return LanguageEntity
+	 * @throws NotFoundHttpException
+	 */
 	private function oneMain() {
 		$query = Query::forge();
 		$query->where('is_main', 1);
 		return $this->one($query);
 	}
 	
+	/**
+	 * @return LanguageEntity
+	 * @throws NotFoundHttpException
+	 */
 	private function oneByCode($code) {
 		$query = Query::forge();
 		$query->where('code', $code);
@@ -79,6 +100,10 @@ class LanguageRepository extends ActiveDiscRepository {
 		return LangHelper::locale2lang(Yii::$app->language);
 	}
 	
+	/**
+	 * @return LanguageEntity
+	 * @throws NotFoundHttpException
+	 */
 	private function oneByLocale($locales) {
 		$collection = $this->all();
 		$locales = ArrayHelper::toArray($locales);
