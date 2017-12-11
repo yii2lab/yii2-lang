@@ -135,7 +135,7 @@ class LanguageRepository extends ActiveDiscRepository implements LanguageInterfa
 		if (!empty($language) && $this->isExistsByCode($language)) {
 			return $language;
 		}
-		return $this->oneMain();
+		return $language;
 	}
 	
 }
