@@ -9,10 +9,10 @@ class Domain extends \yii2lab\domain\Domain {
 	private $isInited = false;
 	
 	public function init() {
-		if($this->isInited) {
+        parent::init();
+	    if($this->isInited) {
 			return;
 		}
-		parent::init();
 		$this->isInited = true;
 		$this->language;
 	}
