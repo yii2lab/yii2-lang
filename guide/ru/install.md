@@ -16,11 +16,22 @@ return [
     ...
 	'language' => LanguageEnum::RU, // current Language
 	'sourceLanguage' => LanguageEnum::SOURCE, // Language development
+	...
 	'bootstrap' => [..., 'language', ...],
+	...
 	'components' => [
         ...
 	    'language' => 'yii2module\lang\domain\components\Language',
-        ...
+	    'i18n' => [
+			'class' => 'yii2module\lang\domain\i18n\I18N',
+			'translations' => [
+				'*' => [
+					'class' => 'yii2module\lang\domain\i18n\PhpMessageSource',
+					'basePath' => '@common/messages',
+				],
+			],
+		],
+		...
 	],
 ];
 
