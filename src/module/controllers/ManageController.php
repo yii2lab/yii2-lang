@@ -5,7 +5,7 @@ use common\enums\rbac\PermissionEnum;
 use Yii;
 use yii\data\ArrayDataProvider;
 use yii\web\Controller;
-use yii2lab\app\helpers\Config;
+use yii2lab\app\domain\helpers\Config;
 
 class ManageController extends Controller
 {
