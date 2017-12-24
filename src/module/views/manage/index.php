@@ -7,7 +7,7 @@ use yii\data\ArrayDataProvider;
  * @var $dataProvider ArrayDataProvider
  */
 
-$this->title = t('lang/manage', 'title');
+$this->title = Yii::t('lang/manage', 'title');
 
 ?>
 
@@ -19,19 +19,19 @@ $this->title = t('lang/manage', 'title');
 			'columns' => [
 				[
 					'attribute' => 'title',
-					'label' => t('lang/main', 'language'),
+					'label' => Yii::t('lang/main', 'language'),
 				],
 				[
 					'attribute' => 'code',
-					'label' => t('lang/main', 'code'),
+					'label' => Yii::t('lang/main', 'code'),
 				],
 				[
 					'attribute' => 'locale',
-					'label' => t('lang/main', 'locale'),
+					'label' => Yii::t('lang/main', 'locale'),
 				],
 				[
 					'attribute' => 'is_main',
-					'label' => t('lang/main', 'main_as_default'),
+					'label' => Yii::t('lang/main', 'main_as_default'),
 					'format' => 'html',
 					'value' => function ($entity) {
 						return  $entity->is_main ? '<span class="label label-success"><i class="fa fa-check"></i> '.t('yii', 'Yes').'</span>' : '<span class="label label-danger"><i class="fa fa-times"></i> '.t('yii', 'No').'</span>';
