@@ -4,17 +4,20 @@ namespace yii2module\lang\domain\helpers;
 
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\helpers\FileHelper;
 use yii2lab\helpers\ModuleHelper;
+use yii2lab\helpers\yii\FileHelper;
 
 class LangHelper {
+	
+	const PREFIX = '_bundle';
+	const MESSAGES_DIR = 'messages';
 	
 	public static function extract($message) {
 		if(empty($message)) {
 			return '';
 		}
 		if(is_array($message)) {
-			$message = Yii::t($message[0], $message[1]);
+			$message = call_user_func_array('Yii::t', $message);
 		}
 		return $message;
 	}
@@ -24,46 +27,31 @@ class LangHelper {
 		return $langArr[0];
 	}
 	
-	public static function module($name, $message, $params = [], $language = null) {
-		$nameArr = explode('/', $name);
-		$moduleName = $nameArr[0];
-		$fileName = isset($nameArr[1]) ? $nameArr[1] : 'main';
-		if($moduleName == 'this' || empty($moduleName)) {
-			$moduleName = Yii::$app->controller->module->id;
+	public static function getId($bundleName, $category = null) {
+		$result = self::PREFIX . SL . $bundleName;
+		if(!empty($category)) {
+			$result .= SL . $category;
 		}
-		$pathName = 'modules/' . $moduleName;
-		if(empty(Yii::$app->i18n->translations[ $pathName . '/*' ])) {
-			self::registerModule($moduleName);
-		}
-		return Yii::t($pathName . '/' . $fileName, $message, $params, $language);
+		return $result;
 	}
 	
-	public static function registerModule($moduleName) {
-		$moduleClass = ModuleHelper::getClass($moduleName);
-		$langDir = self::getModuleLangDir($moduleClass);
-		
+	public static function registerBundle($bundleName) {
+		$langDir = self::getModuleLangDir($bundleName);
 		if(empty($langDir)) {
-			if(!Yii::$app->has($moduleName)) {
-				return false;
-			}
-			$domain = ArrayHelper::getValue(Yii::$app, $moduleName);
-			$langDir = $domain->path;
-			$langDir = str_replace('\\', '/', $langDir);
-			$langDir = $langDir . '/messages';
-			$langDir = '@' . $langDir;
+			$langDir = self::getDomainLangDir($bundleName);
 		}
-		
-		if($langDir[0] == '@') {
-			$dir = Yii::getAlias($langDir);
-		} else {
-			$dir = ROOT_DIR . DS . $langDir;
-		}
+		$dir = FileHelper::getAlias($langDir);
+		self::addToI18n($dir, $bundleName);
+	}
+	
+	private static function addToI18n($dir, $bundleName) {
 		if(is_dir($dir)) {
-			Yii::$app->i18n->translations[ 'modules/' . $moduleName . '/*' ] = [
+			$id = self::getId($bundleName, '*');
+			Yii::$app->i18n->translations[$id] = [
 				'class' => 'yii\i18n\PhpMessageSource',
 				'sourceLanguage' => 'xx-XX',
 				'basePath' => $dir,
-				'fileMap' => self::genFileMap($moduleName, $dir),
+				'fileMap' => self::genFileMap($bundleName, $dir),
 			];
 		}
 	}
@@ -81,29 +69,36 @@ class LangHelper {
 		return $fileList;
 	}
 	
-	private static function genFileMap($moduleName, $dir) {
+	private static function genFileMap($bundleName, $dir) {
 		$categoryList = self::getLangFileNames($dir);
 		if(empty($categoryList)) {
 			return [];
 		}
 		foreach($categoryList as $category) {
-			$map[ 'modules/' . $moduleName . '/' . $category ] = $category . '.php';
+			$id = self::getId($bundleName, $category);
+			$map[$id] = $category . '.php';
 		}
 		return $map;
 	}
 	
-	private static function getModuleLangDir($moduleClass) {
+	private static function getDomainLangDir($bundleName) {
+		if(!Yii::$app->has($bundleName)) {
+			return false;
+		}
+		$domain = ArrayHelper::getValue(Yii::$app, $bundleName);
+		$langDir = '@' . $domain->path . SL . self::MESSAGES_DIR;
+		return $langDir;
+	}
+	
+	private static function getModuleLangDir($bundleName) {
+		$moduleClass = ModuleHelper::getClass($bundleName);
 		if(!class_exists($moduleClass)) {
-			//Throw new ServerErrorHttpException('module_not_found');
 			return null;
 		}
 		if(property_exists($moduleClass, 'langDir') && !empty($moduleClass::$langDir)) {
 			$langDir = $moduleClass::$langDir;
 		} else {
 			$langDir = null;
-			/* $moduleClassFile = str_replace('\\', '/', $moduleClass);
-			$moduleDir = pathinfo($moduleClassFile, PATHINFO_DIRNAME);
-			$langDir = '@' . $moduleDir . '/messages'; */
 		}
 		return $langDir;
 	}

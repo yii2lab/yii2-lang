@@ -18,11 +18,11 @@ class I18N extends \yii\i18n\I18N
 			if($moduleName == 'this' || empty($moduleName)) {
 				$moduleName = Yii::$app->controller->module->id;
 			}
-			$pathName = 'modules/' . $moduleName;
-			if(empty($this->translations[ $pathName . '/*' ])) {
-				LangHelper::registerModule($moduleName);
+			$id = LangHelper::getId($moduleName, '*');
+			if(empty($this->translations[$id])) {
+				LangHelper::registerBundle($moduleName);
 			}
-			$category = $pathName . '/' . $fileName;
+			$category = LangHelper::getId($moduleName, $fileName);;
 		}
 		return parent::translate($category, $message, $params, $language);
 	}
