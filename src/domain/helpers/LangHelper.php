@@ -9,7 +9,6 @@ use yii2lab\helpers\yii\FileHelper;
 
 class LangHelper {
 	
-	const PREFIX = '_bundle';
 	const PREFIX_MODULE = 'module:';
 	const PREFIX_DOMAIN = 'domain:';
 	const MESSAGES_DIR = 'messages';
@@ -64,15 +63,16 @@ class LangHelper {
 	}
 	
 	private static function registerBundle($bundleName) {
-		$langDirAlias = self::getModuleLangDir($bundleName);
+		$langDirAlias = self::getDomainLangDir($bundleName);
 		if(empty($langDirAlias)) {
-			$langDirAlias = self::getDomainLangDir($bundleName);
+			$langDirAlias = self::getModuleLangDir($bundleName);
 		}
-		self::addToI18n($langDirAlias, $bundleName);
+		if(!empty($langDirAlias)) {
+			self::addToI18n($langDirAlias, $bundleName);
+		}
 	}
 	
 	private static function addToI18n($langDirAlias, $bundleName) {
-		$langDirAlias = FileHelper::normalizeAlias($langDirAlias);
 		$dir = FileHelper::getAlias($langDirAlias);
 		if(is_dir($dir)) {
 			$id = self::getId($bundleName, '*');
@@ -92,9 +92,6 @@ class LangHelper {
 	
 	private static function getLangFileNames($dir) {
 		$dir = Yii::getAlias($dir);
-		/*if(!is_dir($dir)) {
-			return [];
-		}*/
 		$options['only'][] = '*.php';
 		$fileList = FileHelper::findFiles($dir, $options);
 		$fileList = array_map(function ($file) {
@@ -130,8 +127,7 @@ class LangHelper {
 			return false;
 		}
 		$domain = ArrayHelper::getValue(Yii::$app, $bundleName);
-		$langDir = '@' . $domain->path . SL . self::MESSAGES_DIR;
-		return $langDir;
+		return self::getBundlePath($domain->path);
 	}
 	
 	private static function getModuleLangDir($bundleName) {
@@ -140,11 +136,22 @@ class LangHelper {
 			return null;
 		}
 		if(property_exists($moduleClass, 'langDir') && !empty($moduleClass::$langDir)) {
-			$langDir = $moduleClass::$langDir;
-		} else {
-			$langDir = null;
+			return $moduleClass::$langDir;
 		}
-		return $langDir;
+		$path = FileHelper::up($moduleClass,1);
+		return self::getBundlePath($path);
+	}
+	
+	private static function getBundlePath($path) {
+		if(empty($path)) {
+			return false;
+		}
+		$alias = FileHelper::normalizeAlias($path . SL . self::MESSAGES_DIR);
+		$dir = Yii::getAlias($alias);
+		if(!is_dir($dir)) {
+			return false;
+		}
+		return $alias;
 	}
 	
 }
