@@ -10,6 +10,8 @@ use yii2module\lang\domain\interfaces\services\LanguageInterface;
 
 class LanguageService extends ActiveBaseService implements LanguageInterface, ReadInterface {
 	
+	public $translationEventHandler = null;
+	
 	public function initCurrent() {
 		if(APP != CONSOLE) {
 			$this->repository->initLanguage();

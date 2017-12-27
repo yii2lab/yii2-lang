@@ -76,12 +76,17 @@ class LangHelper {
 		$dir = FileHelper::getAlias($langDirAlias);
 		if(is_dir($dir)) {
 			$id = self::getId($bundleName, '*');
-			Yii::$app->i18n->translations[$id] = [
+			$config = [
 				'class' => 'yii\i18n\PhpMessageSource',
 				'sourceLanguage' => 'xx-XX',
 				'basePath' => $langDirAlias,
 				'fileMap' => self::genFileMap($bundleName, $dir),
 			];
+			$translationEventHandler = Yii::$app->lang->language->translationEventHandler;
+			if($translationEventHandler) {
+				$config['on missingTranslation'] = $translationEventHandler;
+			}
+			Yii::$app->i18n->translations[$id] = $config;
 		}
 	}
 	

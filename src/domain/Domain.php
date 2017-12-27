@@ -13,7 +13,9 @@ class Domain extends \yii2lab\domain\Domain {
 				'store' => APP == API ? Driver::HEADER : Driver::COOKIE,
 			],
 			'services' => [
-				'language',
+				'language' => [
+					'translationEventHandler' => ['yii2module\lang\domain\handlers\TranslationEventHandler', 'handleMissingTranslation'],
+				],
 			],
 		];
 	}
