@@ -29,37 +29,52 @@ class LangHelper {
 	}
 	
 	public static function register($category) {
-		$categoryParts = explode('/', $category);
-		if(count($categoryParts) > 1) {
-			$bundleName = $categoryParts[0];
+		$data = self::parseCategory($category);
+		if(empty($data['bundle'])) {
+			return $category;
+		}
+		$id = LangHelper::getId($data['bundle'], '*');
+		if(empty(Yii::$app->i18n->translations[$id])) {
+			LangHelper::registerBundle($data['bundle']);
+		}
+		$category = LangHelper::getId($data['bundle'], $data['category']);
+		return $category;
+	}
+	
+	private static function parseCategory($category) {
+		$items = explode('/', $category);
+		if(count($items) > 1) {
+			$bundleName = $items[0];
 			// todo: заменить this на реальные имена
 			if($bundleName == 'this' || empty($bundleName)) {
 				$bundleName = Yii::$app->controller->module->id;
 			}
 			// todo: костыль
-			$fileName = isset($categoryParts[1]) ? $categoryParts[1] : 'main';
-			$id = LangHelper::getId($bundleName, '*');
-			if(empty(Yii::$app->i18n->translations[$id])) {
-				LangHelper::registerBundle($bundleName);
-			}
-			$category = LangHelper::getId($bundleName, $fileName);
+			$categoryName = isset($items[1]) ? $items[1] : 'main';
+			return [
+				'bundle' => $bundleName,
+				'category' => $categoryName,
+			];
 		}
-		return $category;
+		return [
+			'bundle' => null,
+			'category' => $category,
+		];
 	}
 	
-	private static function getId($bundleName, $category = null) {
-		$bundleArray = explode(':', $bundleName);
+	private static function getId($bundle, $category = null) {
+		$bundleArray = explode(':', $bundle);
 		$hasType = count($bundleArray) > 1;
 		if(!$hasType) {
 			$typePrefix = self::getBundleTypePrefix($bundleArray[0]);
 			if($typePrefix) {
-				$bundleName = $typePrefix . $bundleName;
+				$bundle = $typePrefix . $bundle;
 			}
 		}
 		if(!empty($category)) {
-			$bundleName .= SL . $category;
+			$bundle .= SL . $category;
 		}
-		return $bundleName;
+		return $bundle;
 	}
 	
 	private static function registerBundle($bundleName) {
