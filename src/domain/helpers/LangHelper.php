@@ -3,7 +3,7 @@
 namespace yii2module\lang\domain\helpers;
 
 use Yii;
-use yii\helpers\ArrayHelper;
+use yii2lab\helpers\DomainHelper;
 use yii2lab\helpers\ModuleHelper;
 use yii2lab\helpers\yii\FileHelper;
 
@@ -79,9 +79,9 @@ class LangHelper {
 		if(!empty(Yii::$app->i18n->translations[$id])) {
 			return $id;
 		}
-		$langDirAlias = self::getDomainLangDir($bundleName);
+		$langDirAlias = DomainHelper::messagesAlias($bundleName);
 		if(empty($langDirAlias)) {
-			$langDirAlias = self::getModuleLangDir($bundleName);
+			$langDirAlias = ModuleHelper::messagesAlias($bundleName);
 		}
 		if(!empty($langDirAlias)) {
 			self::addToI18n($langDirAlias, $bundleName);
@@ -107,10 +107,10 @@ class LangHelper {
 		}
 	}
 	
-	private static function getLangFileNames($dir) {
+	private static function findFiles($dir) {
 		$dir = Yii::getAlias($dir);
 		$options['only'][] = '*.php';
-		$fileList = FileHelper::findFiles($dir, $options);
+		$fileList = FileHelper::scanDir($dir . DS . Yii::$app->language);
 		$fileList = array_map(function ($file) {
 			return pathinfo($file, PATHINFO_FILENAME);
 		}, $fileList);
@@ -118,7 +118,7 @@ class LangHelper {
 	}
 	
 	private static function genFileMap($bundleName, $dir) {
-		$categoryList = self::getLangFileNames($dir);
+		$categoryList = self::findFiles($dir);
 		if(empty($categoryList)) {
 			return [];
 		}
@@ -137,38 +137,6 @@ class LangHelper {
 			return self::PREFIX_MODULE;
 		}
 		return null;
-	}
-	
-	private static function getDomainLangDir($bundleName) {
-		if(!Yii::$app->has($bundleName)) {
-			return false;
-		}
-		$domain = ArrayHelper::getValue(Yii::$app, $bundleName);
-		return self::getBundlePath($domain->path);
-	}
-	
-	private static function getModuleLangDir($bundleName) {
-		$moduleClass = ModuleHelper::getClass($bundleName);
-		if(!class_exists($moduleClass)) {
-			return null;
-		}
-		if(property_exists($moduleClass, 'langDir') && !empty($moduleClass::$langDir)) {
-			return $moduleClass::$langDir;
-		}
-		$path = FileHelper::up($moduleClass,1);
-		return self::getBundlePath($path);
-	}
-	
-	private static function getBundlePath($path) {
-		if(empty($path)) {
-			return false;
-		}
-		$alias = FileHelper::normalizeAlias($path . SL . self::MESSAGES_DIR);
-		$dir = Yii::getAlias($alias);
-		if(!is_dir($dir)) {
-			return false;
-		}
-		return $alias;
 	}
 	
 }
