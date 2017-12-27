@@ -64,21 +64,22 @@ class LangHelper {
 	}
 	
 	private static function registerBundle($bundleName) {
-		$langDir = self::getModuleLangDir($bundleName);
-		if(empty($langDir)) {
-			$langDir = self::getDomainLangDir($bundleName);
+		$langDirAlias = self::getModuleLangDir($bundleName);
+		if(empty($langDirAlias)) {
+			$langDirAlias = self::getDomainLangDir($bundleName);
 		}
-		$dir = FileHelper::getAlias($langDir);
-		self::addToI18n($dir, $bundleName);
+		self::addToI18n($langDirAlias, $bundleName);
 	}
 	
-	private static function addToI18n($dir, $bundleName) {
+	private static function addToI18n($langDirAlias, $bundleName) {
+		$langDirAlias = FileHelper::normalizeAlias($langDirAlias);
+		$dir = FileHelper::getAlias($langDirAlias);
 		if(is_dir($dir)) {
 			$id = self::getId($bundleName, '*');
 			Yii::$app->i18n->translations[$id] = [
 				'class' => 'yii\i18n\PhpMessageSource',
 				'sourceLanguage' => 'xx-XX',
-				'basePath' => $dir,
+				'basePath' => $langDirAlias,
 				'fileMap' => self::genFileMap($bundleName, $dir),
 			];
 		}
