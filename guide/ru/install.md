@@ -28,14 +28,17 @@ return [
 				'*' => [
 					'class' => 'yii2module\lang\domain\i18n\PhpMessageSource',
 					'basePath' => '@common/messages',
+					'on missingTranslation' => ['yii2module\lang\domain\handlers\TranslationEventHandler', 'handleMissingTranslation'],
 				],
 			],
 		],
 		...
 	],
 ];
-
 ```
+
+Обработчик недостоющего перевода `on missingTranslation` желательно назначать всем источникам перевода,
+чтобы обработка была единообразной.
 
 Объявляем common модуль:
 
