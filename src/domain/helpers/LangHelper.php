@@ -10,6 +10,8 @@ use yii2lab\helpers\yii\FileHelper;
 class LangHelper {
 	
 	const PREFIX = '_bundle';
+	const PREFIX_MODULE = 'module:';
+	const PREFIX_DOMAIN = 'domain:';
 	const MESSAGES_DIR = 'messages';
 	
 	public static function extract($message) {
@@ -27,15 +29,41 @@ class LangHelper {
 		return $langArr[0];
 	}
 	
-	public static function getId($bundleName, $category = null) {
-		$result = self::PREFIX . SL . $bundleName;
-		if(!empty($category)) {
-			$result .= SL . $category;
+	public static function register($category) {
+		$categoryParts = explode('/', $category);
+		if(count($categoryParts) > 1) {
+			$bundleName = $categoryParts[0];
+			// todo: заменить this на реальные имена
+			if($bundleName == 'this' || empty($bundleName)) {
+				$bundleName = Yii::$app->controller->module->id;
+			}
+			// todo: костыль
+			$fileName = isset($categoryParts[1]) ? $categoryParts[1] : 'main';
+			$id = LangHelper::getId($bundleName, '*');
+			if(empty(Yii::$app->i18n->translations[$id])) {
+				LangHelper::registerBundle($bundleName);
+			}
+			$category = LangHelper::getId($bundleName, $fileName);
 		}
-		return $result;
+		return $category;
 	}
 	
-	public static function registerBundle($bundleName) {
+	private static function getId($bundleName, $category = null) {
+		$bundleArray = explode(':', $bundleName);
+		$hasType = count($bundleArray) > 1;
+		if(!$hasType) {
+			$typePrefix = self::getBundleTypePrefix($bundleArray[0]);
+			if($typePrefix) {
+				$bundleName = $typePrefix . $bundleName;
+			}
+		}
+		if(!empty($category)) {
+			$bundleName .= SL . $category;
+		}
+		return $bundleName;
+	}
+	
+	private static function registerBundle($bundleName) {
 		$langDir = self::getModuleLangDir($bundleName);
 		if(empty($langDir)) {
 			$langDir = self::getDomainLangDir($bundleName);
@@ -79,6 +107,16 @@ class LangHelper {
 			$map[$id] = $category . '.php';
 		}
 		return $map;
+	}
+	
+	private static function getBundleTypePrefix($bundleName) {
+		if(Yii::$app->has($bundleName)) {
+			return self::PREFIX_DOMAIN;
+		}
+		if(config('modules.' . $bundleName)) {
+			return self::PREFIX_MODULE;
+		}
+		return null;
 	}
 	
 	private static function getDomainLangDir($bundleName) {
