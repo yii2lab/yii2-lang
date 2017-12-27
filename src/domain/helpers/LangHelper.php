@@ -12,6 +12,7 @@ class LangHelper {
 	const PREFIX_MODULE = 'module:';
 	const PREFIX_DOMAIN = 'domain:';
 	const MESSAGES_DIR = 'messages';
+	const ALL = '*';
 	
 	public static function extract($message) {
 		if(empty($message)) {
@@ -75,8 +76,9 @@ class LangHelper {
 	}
 	
 	private static function registerBundle($bundleName) {
-		$id = LangHelper::getId($bundleName, '*');
-		if(!empty(Yii::$app->i18n->translations[$id])) {
+		$category = self::ALL;
+		$id = LangHelper::getId($bundleName, $category);
+		if(isset(Yii::$app->i18n->translations[$id])) {
 			return $id;
 		}
 		$langDirAlias = DomainHelper::messagesAlias($bundleName);
@@ -84,15 +86,15 @@ class LangHelper {
 			$langDirAlias = ModuleHelper::messagesAlias($bundleName);
 		}
 		if(!empty($langDirAlias)) {
-			self::addToI18n($langDirAlias, $bundleName);
+			self::addToI18n($langDirAlias, $bundleName, $category);
 		}
 		return $id;
 	}
 	
-	private static function addToI18n($langDirAlias, $bundleName) {
+	private static function addToI18n($langDirAlias, $bundleName, $category) {
 		$dir = FileHelper::getAlias($langDirAlias);
 		if(is_dir($dir)) {
-			$id = self::getId($bundleName, '*');
+			$id = self::getId($bundleName, $category);
 			$config = [
 				'class' => 'yii\i18n\PhpMessageSource',
 				'sourceLanguage' => 'xx-XX',
@@ -130,10 +132,10 @@ class LangHelper {
 	}
 	
 	private static function getBundleTypePrefix($bundleName) {
-		if(Yii::$app->has($bundleName)) {
+		if(DomainHelper::has($bundleName)) {
 			return self::PREFIX_DOMAIN;
 		}
-		if(config('modules.' . $bundleName)) {
+		if(ModuleHelper::has($bundleName)) {
 			return self::PREFIX_MODULE;
 		}
 		return null;
