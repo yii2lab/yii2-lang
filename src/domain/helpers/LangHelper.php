@@ -33,10 +33,7 @@ class LangHelper {
 		if(empty($data['bundle'])) {
 			return $category;
 		}
-		$id = LangHelper::getId($data['bundle'], '*');
-		if(empty(Yii::$app->i18n->translations[$id])) {
-			LangHelper::registerBundle($data['bundle']);
-		}
+		LangHelper::registerBundle($data['bundle']);
 		$category = LangHelper::getId($data['bundle'], $data['category']);
 		return $category;
 	}
@@ -78,6 +75,10 @@ class LangHelper {
 	}
 	
 	private static function registerBundle($bundleName) {
+		$id = LangHelper::getId($bundleName, '*');
+		if(!empty(Yii::$app->i18n->translations[$id])) {
+			return $id;
+		}
 		$langDirAlias = self::getDomainLangDir($bundleName);
 		if(empty($langDirAlias)) {
 			$langDirAlias = self::getModuleLangDir($bundleName);
@@ -85,6 +86,7 @@ class LangHelper {
 		if(!empty($langDirAlias)) {
 			self::addToI18n($langDirAlias, $bundleName);
 		}
+		return $id;
 	}
 	
 	private static function addToI18n($langDirAlias, $bundleName) {
