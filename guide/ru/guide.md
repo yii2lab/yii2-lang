@@ -7,19 +7,7 @@
 Yii::t('main', 'title')
 ```
 
-А можем и расширенный:
-
-```php
-Yii::t('bank/main', 'card')
-```
-
 Обращение к переводу домена:
-
-```php
-Yii::t('bank/main', 'card')
-```
-
-или
 
 ```php
 Yii::t('domain:bank/main', 'card')
@@ -28,16 +16,16 @@ Yii::t('domain:bank/main', 'card')
 Обращение к переводу модуля:
 
 ```php
-Yii::t('bank/main', 'card')
-```
-
-или
-
-```php
 Yii::t('module:bank/main', 'card')
 ```
 
-Как можете видеть, категория домена и модуля может совпадать.
+Универсальное обращение:
+
+```php
+Yii::t('bank/main', 'card')
+```
+
+Категория домена и модуля может совпадать.
 Чтобы разрешить коллизию, нужно к имени категории добавить перфикс `domain:` или `module:`.
 
 По умолчанию, система ищет переводы в папке модуля или домена, подпапка `messages`.
@@ -48,12 +36,12 @@ Yii::t('module:bank/main', 'card')
 class Module extends \yii\base\Module
 {
 	
-	public static $langDir = 'frontend/modules/bank/messages';
+	public static $langDir = '@frontend/modules/bank/messages';
 	
 }
 ```
 
-в этом примере модуль использует переводы домена.
+в этом примере модуль использует переводы из папки домена.
 
 Модуль многоязычности имеет стаднартный набор переводов:
 
@@ -65,3 +53,10 @@ class Module extends \yii\base\Module
 Yii::t('lang/action', 'send')
 ```
 
+Если отсутствует перевод, то выводится текст вида:
+
+```
+[module:notify/main, title]
+```
+
+> Note: Такой формат текста выводится только в отладочном режиме
