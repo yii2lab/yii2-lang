@@ -2,6 +2,7 @@
 
 namespace yii2module\lang\domain\handlers;
 
+use yii\helpers\Inflector;
 use yii\i18n\MissingTranslationEvent;
 
 class TranslationEventHandler
@@ -10,7 +11,7 @@ class TranslationEventHandler
 	    if(YII_DEBUG) {
 		    $event->translatedMessage = "[{$event->category}, {$event->message}]";
 	    } else {
-		    $event->translatedMessage = $event->message;
+		    $event->translatedMessage = Inflector::titleize($event->message);
 	    }
     }
 }
