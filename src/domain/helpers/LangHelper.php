@@ -6,6 +6,8 @@ use Yii;
 use yii2lab\helpers\DomainHelper;
 use yii2lab\helpers\ModuleHelper;
 use yii2lab\helpers\yii\FileHelper;
+use yii2mod\helpers\ArrayHelper;
+use yii2module\lang\domain\enums\LanguageEnum;
 
 class LangHelper {
 	
@@ -13,6 +15,36 @@ class LangHelper {
 	const PREFIX_DOMAIN = 'domain:';
 	const MESSAGES_DIR = 'messages';
 	const ALL = '*';
+	
+	
+	
+	public static function generateConfigShort($basePath, $id = null, $file = null) {
+		$fileMap = null;
+		if(!empty($id) && !empty($file)) {
+			$fileMap = [
+				$id => $file . DOT . 'php',
+			];
+		}
+		return self::generateConfig($basePath, $fileMap);
+	}
+	
+	public static function generateConfig($basePath, $fileMap) {
+		$config = [
+			'class' => 'yii2module\lang\domain\i18n\PhpMessageSource',
+			'sourceLanguage' => LanguageEnum::SOURCE,
+			'basePath' => $basePath,
+		];
+		if(!empty($fileMap)) {
+			$config['fileMap'] = $fileMap;
+		}
+		if(is_object(Yii::$app)) {
+			$translationEventHandler = Yii::$app->lang->language->translationEventHandler;
+			if($translationEventHandler) {
+				$config['on missingTranslation'] = $translationEventHandler;
+			}
+		}
+		return $config;
+	}
 	
 	public static function extract($message) {
 		if(empty($message)) {
@@ -37,6 +69,11 @@ class LangHelper {
 		LangHelper::registerBundle($data['bundle']);
 		$category = LangHelper::getId($data['bundle'], $data['category']);
 		return $category;
+	}
+	
+	public static function addTranslation($id, $basePath, $fileMap = null) {
+		$config = self::generateConfig($basePath, $fileMap);
+		Yii::$app->i18n->translations[$id] = $config;
 	}
 	
 	private static function parseCategory($category) {
@@ -81,31 +118,22 @@ class LangHelper {
 		if(isset(Yii::$app->i18n->translations[$id])) {
 			return $id;
 		}
-		$langDirAlias = DomainHelper::messagesAlias($bundleName);
-		if(empty($langDirAlias)) {
-			$langDirAlias = ModuleHelper::messagesAlias($bundleName);
+		$basePath = DomainHelper::messagesAlias($bundleName);
+		if(empty($basePath)) {
+			$basePath = ModuleHelper::messagesAlias($bundleName);
 		}
-		if(!empty($langDirAlias)) {
-			self::addToI18n($langDirAlias, $bundleName, $category);
+		if(!empty($basePath)) {
+			self::addToI18n($basePath, $bundleName, $category);
 		}
 		return $id;
 	}
 	
-	private static function addToI18n($langDirAlias, $bundleName, $category) {
-		$dir = FileHelper::getAlias($langDirAlias);
+	private static function addToI18n($basePath, $bundleName, $category) {
+		$dir = FileHelper::getAlias($basePath);
 		if(is_dir($dir)) {
 			$id = self::getId($bundleName, $category);
-			$config = [
-				'class' => 'yii\i18n\PhpMessageSource',
-				'sourceLanguage' => 'xx-XX',
-				'basePath' => $langDirAlias,
-				'fileMap' => self::genFileMap($bundleName, $dir),
-			];
-			$translationEventHandler = Yii::$app->lang->language->translationEventHandler;
-			if($translationEventHandler) {
-				$config['on missingTranslation'] = $translationEventHandler;
-			}
-			Yii::$app->i18n->translations[$id] = $config;
+			$fileMap = self::genFileMap($bundleName, $dir);
+			self::addTranslation($id, $basePath, $fileMap);
 		}
 	}
 	
