@@ -56,6 +56,12 @@ class LangHelper {
 		return $message;
 	}
 	
+	/**
+	 * @param $lang
+	 *
+	 * @return mixed
+	 * @deprecated moved to yii2module\lang\domain\enums\LanguageEnum::code
+	 */
 	public static function locale2lang($lang) {
 		$langArr = explode('-', $lang);
 		return $langArr[0];
