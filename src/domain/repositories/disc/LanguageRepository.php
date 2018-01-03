@@ -56,15 +56,18 @@ class LanguageRepository extends ActiveDiscRepository implements LanguageInterfa
 	public function initLanguage()
 	{
 		$languageFromStore = $this->domain->repositories->store->get();
-		if (!empty($languageFromStore) && $this->isExistsByCode($languageFromStore)) {
-			Yii::$app->language = $languageFromStore;
-		} else {
-			$clientLanguages = Yii::$app->getRequest()->getAcceptableLanguages();
-			try {
-				$languageFromUserAgent = $this->oneByLocalesOrCodes($clientLanguages);
-				$this->saveCurrent($languageFromUserAgent->locale);
-			} catch(NotFoundHttpException $e) {}
+		if (!empty($languageFromStore)) {
+			$code = LanguageEnum::code($languageFromStore);
+			if($this->isExistsByCode($code)) {
+				Yii::$app->language = $code;
+				return;
+			}
 		}
+		$clientLanguages = Yii::$app->getRequest()->getAcceptableLanguages();
+		try {
+			$languageFromUserAgent = $this->oneByLocalesOrCodes($clientLanguages);
+			$this->saveCurrent($languageFromUserAgent->locale);
+		} catch(NotFoundHttpException $e) {}
 	}
 	
 	/**
@@ -97,7 +100,7 @@ class LanguageRepository extends ActiveDiscRepository implements LanguageInterfa
 	}
 	
 	private function currentLanguage() {
-		return LangHelper::locale2lang(Yii::$app->language);
+		return LanguageEnum::code(Yii::$app->language);
 	}
 	
 	/**
