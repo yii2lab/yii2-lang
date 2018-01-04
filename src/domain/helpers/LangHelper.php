@@ -6,7 +6,6 @@ use Yii;
 use yii2lab\helpers\DomainHelper;
 use yii2lab\helpers\ModuleHelper;
 use yii2lab\helpers\yii\FileHelper;
-use yii2mod\helpers\ArrayHelper;
 use yii2module\lang\domain\enums\LanguageEnum;
 
 class LangHelper {
@@ -15,36 +14,6 @@ class LangHelper {
 	const PREFIX_DOMAIN = 'domain:';
 	const MESSAGES_DIR = 'messages';
 	const ALL = '*';
-	
-	
-	
-	public static function generateConfigShort($basePath, $id = null, $file = null) {
-		$fileMap = null;
-		if(!empty($id) && !empty($file)) {
-			$fileMap = [
-				$id => $file . DOT . 'php',
-			];
-		}
-		return self::generateConfig($basePath, $fileMap);
-	}
-	
-	public static function generateConfig($basePath, $fileMap) {
-		$config = [
-			'class' => 'yii2module\lang\domain\i18n\PhpMessageSource',
-			'sourceLanguage' => LanguageEnum::SOURCE,
-			'basePath' => $basePath,
-		];
-		if(!empty($fileMap)) {
-			$config['fileMap'] = $fileMap;
-		}
-		if(is_object(Yii::$app)) {
-			$translationEventHandler = Yii::$app->lang->language->translationEventHandler;
-			if($translationEventHandler) {
-				$config['on missingTranslation'] = $translationEventHandler;
-			}
-		}
-		return $config;
-	}
 	
 	public static function extract($message) {
 		if(empty($message)) {
@@ -80,6 +49,24 @@ class LangHelper {
 	public static function addTranslation($id, $basePath, $fileMap = null) {
 		$config = self::generateConfig($basePath, $fileMap);
 		Yii::$app->i18n->translations[$id] = $config;
+	}
+	
+	private static function generateConfig($basePath, $fileMap) {
+		$config = [
+			'class' => 'yii2module\lang\domain\i18n\PhpMessageSource',
+			'sourceLanguage' => LanguageEnum::SOURCE,
+			'basePath' => $basePath,
+		];
+		if(!empty($fileMap)) {
+			$config['fileMap'] = $fileMap;
+		}
+		if(is_object(Yii::$app)) {
+			$translationEventHandler = Yii::$app->lang->language->translationEventHandler;
+			if($translationEventHandler) {
+				$config['on missingTranslation'] = $translationEventHandler;
+			}
+		}
+		return $config;
 	}
 	
 	private static function parseCategory($category) {
@@ -124,14 +111,20 @@ class LangHelper {
 		if(isset(Yii::$app->i18n->translations[$id])) {
 			return $id;
 		}
-		$basePath = DomainHelper::messagesAlias($bundleName);
+		$bundleNameOnly = self::extractCleanBundleName($bundleName);
+		$basePath = DomainHelper::messagesAlias($bundleNameOnly);
 		if(empty($basePath)) {
-			$basePath = ModuleHelper::messagesAlias($bundleName);
+			$basePath = ModuleHelper::messagesAlias($bundleNameOnly);
 		}
 		if(!empty($basePath)) {
 			self::addToI18n($basePath, $bundleName, $category);
 		}
 		return $id;
+	}
+	
+	private static function extractCleanBundleName($bundleName) {
+		$bundleNameArr = explode(':', $bundleName);
+		return count($bundleNameArr) == 1 ? $bundleNameArr[0] : $bundleNameArr[1];
 	}
 	
 	private static function addToI18n($basePath, $bundleName, $category) {
