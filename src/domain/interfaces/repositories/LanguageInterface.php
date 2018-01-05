@@ -13,6 +13,11 @@ interface LanguageInterface {
 	 */
 	public function oneCurrent();
 	public function saveCurrent($language);
-	public function initLanguage();
+	
+	/**
+	 * @return LanguageEntity
+	 * @throws NotFoundHttpException
+	 */
+	public function oneByLocalesOrCodes($value);
 	
 }
