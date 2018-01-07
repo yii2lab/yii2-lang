@@ -5,6 +5,7 @@ namespace yii2module\lang\module\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
+use yii2lab\helpers\Behavior;
 
 class DefaultController extends Controller
 {
@@ -15,12 +16,9 @@ class DefaultController extends Controller
 	public function behaviors()
 	{
 		return [
-			'verbs' => [
-				'class' => VerbFilter::className(),
-				'actions' => [
-					'change' => ['post'],
-				],
-			],
+			'verb' => Behavior::verb([
+				'change' => ['post'],
+			]),
 		];
 	}
 

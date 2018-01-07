@@ -6,6 +6,7 @@ use Yii;
 use yii\data\ArrayDataProvider;
 use yii\web\Controller;
 use yii2lab\app\domain\helpers\Config;
+use yii2lab\helpers\Behavior;
 
 class ManageController extends Controller
 {
@@ -16,7 +17,7 @@ class ManageController extends Controller
 	public function behaviors()
 	{
 		return [
-			Config::genAccess(PermissionEnum::LANG_MANAGE),
+			Behavior::access(PermissionEnum::LANG_MANAGE),
 		];
 	}
 
