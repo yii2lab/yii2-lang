@@ -7,12 +7,12 @@ use yii2lab\domain\Domain;
 class DomainConfigHelper {
 	
 	public static function addTranslations($config) {
-		$config = self::addTranslationsOfType($config, 'components');
+		$config = self::addTranslationsOfType($config);
 		return $config;
 	}
 	
-	private static function addTranslationsOfType($config, $type) {
-		foreach($config[$type] as $name => &$data) {
+	private static function addTranslationsOfType($config) {
+		foreach($config as $name => &$data) {
 			if(self::isDomain($data) && !empty($data['translations'])) {
 				$config = DomainConfigHelper::addTranslation($config, $data['translations']);
 				unset($data['translations']);
