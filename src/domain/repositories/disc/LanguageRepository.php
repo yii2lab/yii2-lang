@@ -17,19 +17,20 @@ class LanguageRepository extends ActiveDiscRepository implements LanguageInterfa
 	public $table = 'languages';
 	public $callback;
 	
+	protected $primaryKey = 'locale';
+	
 	/**
 	 * @return LanguageEntity
 	 * @throws NotFoundHttpException
 	 */
 	public function oneCurrent() {
-		$currentLang = $this->currentLanguage();
-		$entity = $this->oneByCode($currentLang);
+		$entity = $this->oneByLocale(Yii::$app->language);
 		return $entity;
 	}
 	
 	public function saveCurrent($language) {
 		try {
-			$entity = $this->oneByLocalesOrCodes($language);
+			$entity = $this->oneByLocale($language);
 			$language = $entity->locale;
 		} catch(NotFoundHttpException $e) {
 			return;
@@ -63,42 +64,7 @@ class LanguageRepository extends ActiveDiscRepository implements LanguageInterfa
 	 * @return LanguageEntity
 	 * @throws NotFoundHttpException
 	 */
-	public function oneByLocalesOrCodes($value) {
-		try {
-			return $this->oneByCode($value);
-		} catch(NotFoundHttpException $e) {}
-		return $this->oneByLocale($value);
-	}
-	
-	/**
-	 * @return LanguageEntity
-	 * @throws NotFoundHttpException
-	 */
-	private function oneMain() {
-		$query = Query::forge();
-		$query->where('is_main', 1);
-		return $this->one($query);
-	}
-	
-	/**
-	 * @return LanguageEntity
-	 * @throws NotFoundHttpException
-	 */
-	private function oneByCode($code) {
-		$query = Query::forge();
-		$query->where('code', $code);
-		return $this->one($query);
-	}
-	
-	private function currentLanguage() {
-		return LanguageEnum::code(Yii::$app->language);
-	}
-	
-	/**
-	 * @return LanguageEntity
-	 * @throws NotFoundHttpException
-	 */
-	private function oneByLocale($locales) {
+	public function oneByLocale($locales) {
 		$collection = $this->all();
 		$locales = ArrayHelper::toArray($locales);
 		foreach ($locales as $language) {

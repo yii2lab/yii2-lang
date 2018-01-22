@@ -5,6 +5,7 @@ namespace tests\unit\services;
 use Codeception\Test\Unit;
 use Yii;
 use yii2lab\domain\data\Query;
+use yii2module\lang\domain\enums\LanguageEnum;
 
 class LanguageTest extends Unit
 {
@@ -15,63 +16,56 @@ class LanguageTest extends Unit
 		expect('Отправить')->equals($translate);
 	}
 	
-	public function testSwitchLang()
+	public function testCurrent()
 	{
-		Yii::$app->lang->language->saveCurrent('en');
-		expect('en-UK')->equals(Yii::$app->language);
+		expect(LanguageEnum::RU)->equals(Yii::$app->language);
 		
-		$entity = Yii::$app->lang->language->oneCurrent();
-		$this->tester->assertEntity([
-			'code' => 'en',
-			'locale' => 'en-UK',
-			'is_main' => false,
-		], $entity);
-		
-		Yii::$app->lang->language->saveCurrent('ru');
-		expect('ru-RU')->equals(Yii::$app->language);
 		$entity = Yii::$app->lang->language->oneCurrent();
 		$this->tester->assertEntity([
 			'code' => 'ru',
-			'locale' => 'ru-RU',
+			'locale' => LanguageEnum::RU,
 			'is_main' => true,
 		], $entity);
 	}
 	
-	public function testSwitchInvalidLang()
+	public function testSwitchLang()
 	{
-		Yii::$app->lang->language->saveCurrent('ruu');
-		expect('xx-XX')->equals(Yii::$app->language);
-		$entity = Yii::$app->lang->language->oneCurrent();
-		$this->tester->assertEntity([
-			'code' => 'xx',
-			'locale' => 'xx-XX',
-			'is_main' => false,
-		], $entity);
+		Yii::$app->lang->language->saveCurrent('en');
+		expect(LanguageEnum::EN)->equals(Yii::$app->language);
+		
+		Yii::$app->lang->language->saveCurrent('ru');
+		expect(LanguageEnum::RU)->equals(Yii::$app->language);
 	}
 	
-	public function testLangList()
+	public function testSwitchInvalidLang()
+	{
+		Yii::$app->lang->language->saveCurrent('zx');
+		expect(LanguageEnum::RU)->equals(Yii::$app->language);
+	}
+	
+	public function testList()
 	{
 		$collection = Yii::$app->lang->language->all();
 		$this->tester->assertCollection([
 			[
 				'code' => 'ru',
-				'locale' => 'ru-RU',
+				'locale' => LanguageEnum::RU,
 				'is_main' => true,
 			],
 			[
 				'code' => 'en',
-				'locale' => 'en-UK',
+				'locale' => LanguageEnum::EN,
 				'is_main' => false,
 			],
 			[
 				'code' => 'xx',
-				'locale' => 'xx-XX',
+				'locale' => LanguageEnum::SOURCE,
 				'is_main' => false,
 			],
 		], $collection);
 	}
 	
-	public function testLangListOrderByCode()
+	public function testListOrderByCode()
 	{
 		$query = Query::forge();
 		$query->orderBy('code');
@@ -79,20 +73,35 @@ class LanguageTest extends Unit
 		$this->tester->assertCollection([
 			[
 				'code' => 'en',
-				'locale' => 'en-UK',
+				'locale' => LanguageEnum::EN,
 				'is_main' => false,
 			],
 			[
 				'code' => 'ru',
-				'locale' => 'ru-RU',
+				'locale' => LanguageEnum::RU,
 				'is_main' => true,
 			],
 			[
 				'code' => 'xx',
-				'locale' => 'xx-XX',
+				'locale' => LanguageEnum::SOURCE,
 				'is_main' => false,
 			],
 		], $collection);
+	}
+	
+	public function testOneByLocale()
+	{
+		$expectEntity = [
+			'code' => 'ru',
+			'locale' => LanguageEnum::RU,
+			'is_main' => true,
+		];
+		
+		$collection = Yii::$app->lang->language->oneByLocale('ru-RU');
+		$this->tester->assertEntity($expectEntity, $collection);
+		
+		$collection = Yii::$app->lang->language->oneByLocale('ru');
+		$this->tester->assertEntity($expectEntity, $collection);
 	}
 	
 }

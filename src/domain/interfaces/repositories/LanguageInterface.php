@@ -18,6 +18,6 @@ interface LanguageInterface {
 	 * @return LanguageEntity
 	 * @throws NotFoundHttpException
 	 */
-	public function oneByLocalesOrCodes($value);
+	public function oneByLocale($value);
 	
 }
