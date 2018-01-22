@@ -6,6 +6,13 @@ use yii2lab\domain\Domain;
 
 class DomainConfigHelper {
 	
+	public static function normalizeTranslation($config) {
+		$config['class'] = 'yii2module\lang\domain\i18n\PhpMessageSource';
+		$config['on missingTranslation'] = ['yii2module\lang\domain\handlers\TranslationEventHandler', 'handleMissingTranslation'];
+		$config = self::addPrefix($config);
+		return $config;
+	}
+	
 	public static function addTranslations($config) {
 		$config = self::addTranslationsOfType($config);
 		return $config;
@@ -50,7 +57,7 @@ class DomainConfigHelper {
 		return $translationConfig;
 	}
 	
-	private static function isDomain($config) {
+	public static function isDomain($config) {
 		if(empty($config['class'])) {
 			return false;
 		}
