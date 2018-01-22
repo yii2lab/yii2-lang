@@ -28,6 +28,12 @@ class LanguageRepository extends ActiveDiscRepository implements LanguageInterfa
 	}
 	
 	public function saveCurrent($language) {
+		try {
+			$entity = $this->oneByLocalesOrCodes($language);
+			$language = $entity->locale;
+		} catch(NotFoundHttpException $e) {
+			return;
+		}
 		Yii::$app->language = $language;
 		$this->domain->repositories->store->set($language);
 		if (is_callable($this->callback)) {
