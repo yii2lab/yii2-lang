@@ -22,6 +22,10 @@ $this->title = Yii::t('lang/manage', 'title');
 					'label' => Yii::t('lang/main', 'language'),
 				],
 				[
+					'attribute' => 'name',
+					'label' => Yii::t('lang/main', 'name'),
+				],
+				[
 					'attribute' => 'code',
 					'label' => Yii::t('lang/main', 'code'),
 				],
@@ -37,6 +41,14 @@ $this->title = Yii::t('lang/manage', 'title');
 						return  $entity->is_main ? '<span class="label label-success"><i class="fa fa-check"></i> '.t('yii', 'Yes').'</span>' : '<span class="label label-danger"><i class="fa fa-times"></i> '.t('yii', 'No').'</span>';
 					},
 				],
+				/*[
+					'attribute' => 'is_enabled',
+					'label' => Yii::t('lang/main', 'is_enabled'),
+					'format' => 'html',
+					'value' => function ($entity) {
+						return  $entity->is_enabled ? '<span class="label label-success"><i class="fa fa-check"></i> '.t('yii', 'Yes').'</span>' : '<span class="label label-danger"><i class="fa fa-times"></i> '.t('yii', 'No').'</span>';
+					},
+				],*/
 			],
 		]); ?>
 	</div>

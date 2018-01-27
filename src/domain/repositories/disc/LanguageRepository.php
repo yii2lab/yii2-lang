@@ -15,6 +15,7 @@ use yii2module\lang\domain\interfaces\repositories\LanguageInterface;
 class LanguageRepository extends ActiveDiscRepository implements LanguageInterface, ReadInterface {
 	
 	public $table = 'languages';
+	public $path = '@yii2module/lang/domain/data';
 	public $callback;
 	
 	protected $primaryKey = 'locale';
@@ -48,13 +49,16 @@ class LanguageRepository extends ActiveDiscRepository implements LanguageInterfa
 	 * @return LanguageEntity[]
 	 */
 	public function all(Query $query = null) {
+		$query = Query::forge($query);
 		$collection = parent::all($query);
 		if(YII_ENV_TEST) {
 			$collection[] = $this->forgeEntity([
 				'title' => 'Source',
+				'name' => 'source',
 				'code' => LanguageEnum::code(LanguageEnum::SOURCE),
 				'locale' => LanguageEnum::SOURCE,
 				'is_main' => false,
+				'is_enabled' => true,
 			]);
 		}
 		return $collection;
