@@ -2,13 +2,11 @@
 
 namespace yii2module\lang\module\helpers;
 
-// todo: отрефакторить - сделать нормальный интерфейс и родителя
-
 use common\enums\rbac\PermissionEnum;
 
 class Menu {
 	
-	static function getMenu() {
+	public function toArray() {
 		return [
 			'label' => ['lang/main', 'title'],
 			'url' => 'lang/manage',
