@@ -5,6 +5,7 @@ namespace yii2module\lang\domain\repositories\disc;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
+use yii2lab\domain\BaseEntity;
 use yii2lab\domain\data\Query;
 use yii2lab\domain\interfaces\repositories\ReadInterface;
 use yii2lab\domain\repositories\ActiveDiscRepository;
@@ -30,17 +31,24 @@ class LanguageRepository extends ActiveDiscRepository implements LanguageInterfa
 	}
 	
 	public function saveCurrent($language) {
-		try {
-			$entity = $this->oneByLocale($language);
-			$language = $entity->locale;
-		} catch(NotFoundHttpException $e) {
-			return;
+		if(!($language instanceof BaseEntity)) {
+			try {
+				$language = $this->oneByLocale($language);
+			} catch(NotFoundHttpException $e) {
+				return;
+			}
 		}
-		Yii::$app->language = $language;
-		$this->domain->repositories->store->set($language);
+		Yii::$app->language = $language->code;
+		$this->domain->repositories->store->set($language->locale);
 		if (is_callable($this->callback)) {
 			call_user_func($this->callback);
 		}
+	}
+	
+	public function oneMain() {
+		$query = Query::forge();
+		$query->where('is_main', true);
+		return $this->one($query);
 	}
 	
 	/**

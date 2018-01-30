@@ -31,10 +31,10 @@ class LanguageTest extends Unit
 	public function testSwitchLang()
 	{
 		Yii::$app->lang->language->saveCurrent('en');
-		expect(LanguageEnum::EN)->equals(Yii::$app->language);
+		expect('en')->equals(Yii::$app->language);
 		
 		Yii::$app->lang->language->saveCurrent('ru');
-		expect(LanguageEnum::RU)->equals(Yii::$app->language);
+		expect('ru')->equals(Yii::$app->language);
 	}
 	
 	public function testSwitchInvalidLang()

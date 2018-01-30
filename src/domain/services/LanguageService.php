@@ -28,14 +28,14 @@ class LanguageService extends ActiveBaseService implements LanguageInterface, Re
 		if (!empty($languageFromStore)) {
 			try {
 				$entity = $this->repository->oneByLocale([$languageFromStore]);
-				Yii::$app->language = $entity->code;
+				$this->saveCurrent($entity);
 				return;
 			} catch(NotFoundHttpException $e) {}
 		}
 		$clientLanguages = Yii::$app->getRequest()->getAcceptableLanguages();
 		try {
 			$languageFromUserAgent = $this->repository->oneByLocale($clientLanguages);
-			$this->repository->saveCurrent($languageFromUserAgent->code);
+			$this->saveCurrent($languageFromUserAgent);
 		} catch(NotFoundHttpException $e) {}
 	}
 	

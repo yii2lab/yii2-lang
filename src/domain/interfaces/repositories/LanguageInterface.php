@@ -12,6 +12,7 @@ interface LanguageInterface {
 	 * @throws NotFoundHttpException
 	 */
 	public function oneCurrent();
+	public function oneMain();
 	public function saveCurrent($language);
 	
 	/**
