@@ -73,7 +73,7 @@ class LangHelper {
 		$items = explode('/', $category);
 		if(count($items) > 1) {
 			$bundleName = $items[0];
-			// todo: заменить this на реальные имена
+			// todo: @deprecated заменить this на реальные имена
 			if($bundleName == 'this' || empty($bundleName)) {
 				$bundleName = Yii::$app->controller->module->id;
 			}
