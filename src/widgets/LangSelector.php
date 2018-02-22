@@ -7,6 +7,7 @@ use yii\base\Widget;
 use yii\bootstrap\Dropdown;
 use yii\helpers\Html;
 use yii2lab\helpers\MenuHelper;
+use yii2lab\misc\enums\HtmlEnum;
 
 class LangSelector extends Widget {
 	
@@ -15,7 +16,7 @@ class LangSelector extends Widget {
 	 */
 	public function run() {
 		$currentEntity = Yii::$app->lang->language->oneCurrent();
-		echo Html::a( $currentEntity->title . '<b class="caret"></b>', '#', [
+		echo Html::a( $currentEntity->title . HtmlEnum::CARET, '#', [
 			'class' => 'dropdown-toggle',
 			'data-toggle' => 'dropdown',
 		]);
