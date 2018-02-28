@@ -24,20 +24,13 @@ class LanguageService extends ActiveBaseService implements LanguageInterface, Re
 		if(APP == CONSOLE) {
 			return;
 		}
-		$languageFromStore = $this->domain->repositories->store->get();
-		if (!empty($languageFromStore)) {
-			try {
-				$entity = $this->repository->oneByLocale([$languageFromStore]);
-				$this->saveCurrent($entity);
-				return;
-			} catch(NotFoundHttpException $e) {}
-		}
-		$clientLanguages = Yii::$app->getRequest()->getAcceptableLanguages();
-		try {
-			$languageFromUserAgent = $this->repository->oneByLocale($clientLanguages);
-			$this->saveCurrent($languageFromUserAgent);
-		} catch(NotFoundHttpException $e) {}
-        $entity = $this->repository->oneMain();
+        $entity = $this->getLanguageFromStore();
+		if(empty($entity)) {
+            $entity = $this->setLanguageFromClient();
+        }
+        if(empty($entity)) {
+            $entity = $this->repository->oneMain();
+        }
         $this->saveCurrent($entity);
 	}
 	
@@ -56,5 +49,26 @@ class LanguageService extends ActiveBaseService implements LanguageInterface, Re
 	public function oneByLocale($locale) {
 		return $this->repository->oneByLocale($locale);
 	}
-	
+
+	private function getLanguageFromStore() {
+        $languageFromStore = $this->domain->repositories->store->get();
+        if (empty($languageFromStore)) {
+            return null;
+        }
+        try {
+            return $this->repository->oneByLocale([$languageFromStore]);
+        } catch(NotFoundHttpException $e) {
+            return null;
+        }
+    }
+
+    private function setLanguageFromClient() {
+        $clientLanguages = Yii::$app->getRequest()->getAcceptableLanguages();
+        try {
+            return $this->repository->oneByLocale($clientLanguages);
+        } catch(NotFoundHttpException $e) {
+            return null;
+        }
+    }
+
 }
