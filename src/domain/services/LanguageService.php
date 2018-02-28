@@ -37,6 +37,8 @@ class LanguageService extends ActiveBaseService implements LanguageInterface, Re
 			$languageFromUserAgent = $this->repository->oneByLocale($clientLanguages);
 			$this->saveCurrent($languageFromUserAgent);
 		} catch(NotFoundHttpException $e) {}
+        $entity = $this->repository->oneMain();
+        $this->saveCurrent($entity);
 	}
 	
 	/**
