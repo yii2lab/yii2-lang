@@ -88,7 +88,7 @@ class LanguageRepository extends ActiveDiscRepository implements LanguageInterfa
 				}
 			}
 		}
-		throw new NotFoundHttpException(static::class);
+		return $this->oneMain();
 	}
 	
 }
