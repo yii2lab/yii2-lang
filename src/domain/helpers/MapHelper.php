@@ -12,6 +12,7 @@ class MapHelper {
 		if(empty($categoryList)) {
 			return [];
 		}
+		$map = [];
 		foreach($categoryList as $category) {
 			$id = LangHelper::getId($bundleName, $category);
 			$map[$id] = $category . '.php';
