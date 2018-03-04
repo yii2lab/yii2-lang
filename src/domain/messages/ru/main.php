@@ -3,6 +3,7 @@
 return [
 	'title' => 'Язык',
 	'language_id' => 'Язык ID',
+	'name' => 'Имя',
 	'language' => 'Язык',
 	'code'=>'Код',
 	'locale'=>'Локаль',
