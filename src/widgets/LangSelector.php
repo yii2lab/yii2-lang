@@ -32,11 +32,13 @@ class LangSelector extends Widget {
 	private function collectionToMenu() {
 		$items = [];
 		$collection = Yii::$app->lang->language->all();
+		//$currentEntity = Yii::$app->lang->language->oneCurrent();
 		foreach($collection as $entity) {
 			$items[] = [
 				'label' => $entity->title,
 				'url' => 'lang/default/change?language=' . $entity->code,
 				'linkOptions' => ['data-method' => 'post'],
+				//'active' => ($entity->code == $currentEntity->code),
 			];
 		}
 		return MenuHelper::gen($items);
