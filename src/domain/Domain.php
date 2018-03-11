@@ -16,7 +16,7 @@ class Domain extends \yii2lab\domain\Domain {
 		}
 		return [
 			'repositories' => [
-				'language' => Driver::DISC,
+				'language' => Driver::FILEDB,
 				'store' => $storeDriver,
 			],
 			'services' => [

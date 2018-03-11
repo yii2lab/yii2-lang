@@ -1,23 +1,25 @@
 <?php
 
-namespace yii2module\lang\domain\repositories\disc;
+namespace yii2module\lang\domain\repositories\filedb;
 
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii2lab\domain\BaseEntity;
 use yii2lab\domain\data\Query;
-use yii2lab\domain\repositories\ActiveDiscRepository;
+use yii2lab\domain\repositories\ActiveFiledbRepository;
 use yii2module\lang\domain\entities\LanguageEntity;
 use yii2module\lang\domain\enums\LanguageEnum;
 use yii2module\lang\domain\interfaces\repositories\LanguageInterface;
 
-class LanguageRepository extends ActiveDiscRepository implements LanguageInterface {
+class LanguageRepository extends ActiveFiledbRepository implements LanguageInterface {
 	
-	public $table = 'languages';
-	public $path = '@yii2module/lang/domain/data';
+	public function tableName()
+	{
+		return 'languages';
+	}
+	
 	public $callback;
-	
 	protected $primaryKey = 'locale';
 	
 	/**
@@ -78,16 +80,24 @@ class LanguageRepository extends ActiveDiscRepository implements LanguageInterfa
 	public function oneByLocale($locales) {
 		$collection = $this->all();
 		$locales = ArrayHelper::toArray($locales);
-		foreach ($locales as $language) {
-			$pattern = preg_quote(substr($language, 0, 2), '/');
-			/** @var LanguageEntity $entity */
-			foreach ($collection as $entity) {
-				if (preg_match('/^' . $pattern . '/', $entity->locale)) {
-					return $entity;
-				}
+		foreach ($locales as $locale) {
+			$entity = $this->searchByLocale($collection, $locale);
+			if($entity instanceof LanguageEntity) {
+				return $entity;
 			}
 		}
 		return $this->oneMain();
+	}
+	
+	private function searchByLocale($collection, $locale) {
+		$pattern = preg_quote(substr($locale, 0, 2), '/');
+		/** @var LanguageEntity $entity */
+		foreach ($collection as $entity) {
+			if (preg_match('/^' . $pattern . '/', $entity->locale)) {
+				return $entity;
+			}
+		}
+		return null;
 	}
 	
 }
