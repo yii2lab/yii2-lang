@@ -37,7 +37,7 @@ return [
 ];
 ```
 
-Обработчик недостоющего перевода `on missingTranslation` желательно назначать всем источникам перевода,
+Обработчик недостающего перевода `on missingTranslation` желательно назначать всем источникам перевода,
 чтобы обработка была единообразной.
 
 Объявляем common модуль:
@@ -58,20 +58,8 @@ return [
 
 ```php
 return [
-	'components' => [
 		// ...
-		'lang' => [
-            'class' => 'yii2lab\domain\Domain',
-            'path' => 'yii2module\lang\domain',
-            'repositories' => [
-                'language' => Driver::DISC,
-                'store' => APP == API ? Driver::HEADER : Driver::COOKIE,
-            ],
-            'services' => [
-                'language',
-            ],
-        ],
+		'lang' => 'yii2module\lang\domain\Domain',
 		// ...
-	],
 ];
 ```
