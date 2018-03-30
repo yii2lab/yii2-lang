@@ -4,6 +4,13 @@ namespace yii2module\lang\domain;
 
 use yii2lab\domain\enums\Driver;
 
+/**
+ * Class Domain
+ *
+ * @package yii2module\lang\domain
+ *
+ * @property \yii2module\lang\domain\services\LanguageService $language
+ */
 class Domain extends \yii2lab\domain\Domain {
 	
 	public function config() {
