@@ -89,7 +89,7 @@ class BundleHelper {
 			$config['fileMap'] = $fileMap;
 		}
 		if(is_object(Yii::$app)) {
-			$translationEventHandler = Yii::$app->lang->language->translationEventHandler;
+			$translationEventHandler = Yii::$domain->lang->language->translationEventHandler;
 			if($translationEventHandler) {
 				$config['on missingTranslation'] = $translationEventHandler;
 			}
