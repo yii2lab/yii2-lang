@@ -3,7 +3,7 @@
 namespace yii2module\lang\domain\helpers;
 
 use Yii;
-use yii2lab\helpers\DomainHelper;
+use yii2lab\domain\helpers\DomainHelper;
 use yii2lab\helpers\ModuleHelper;
 use yii2lab\helpers\yii\FileHelper;
 use yii2module\lang\domain\enums\LanguageEnum;
