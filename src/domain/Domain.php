@@ -6,10 +6,10 @@ use yii2lab\domain\enums\Driver;
 
 /**
  * Class Domain
- *
+ * 
  * @package yii2module\lang\domain
- *
- * @property \yii2module\lang\domain\services\LanguageService $language
+ * @property-read \yii2module\lang\domain\interfaces\services\LanguageInterface $language
+ * @property-read \yii2module\lang\domain\interfaces\repositories\RepositoriesInterface $repositories
  */
 class Domain extends \yii2lab\domain\Domain {
 	
