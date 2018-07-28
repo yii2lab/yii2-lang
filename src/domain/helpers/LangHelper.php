@@ -10,6 +10,12 @@ class LangHelper {
 	const PREFIX_MODULE = 'module:';
 	const PREFIX_DOMAIN = 'domain:';
 	
+	public static function normalizeTranslation($config) {
+		$config['class'] = 'yii2module\lang\domain\i18n\PhpMessageSource';
+		$config['on missingTranslation'] = ['yii2module\lang\domain\handlers\TranslationEventHandler', 'handleMissingTranslation'];
+		return $config;
+	}
+	
 	public static function getId($bundle, $category = null) {
 		$bundleArray = explode(':', $bundle);
 		$hasType = count($bundleArray) > 1;
