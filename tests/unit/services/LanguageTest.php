@@ -11,7 +11,7 @@ class LanguageTest extends Unit
 	public function testTranslate()
 	{
 		$translate = Yii::t('action', 'send');
-		expect('Отправить')->equals($translate);
+		$this->tester->assertEquals('Отправить', $translate);
 	}
 	
 }

@@ -12,7 +12,7 @@ class LanguageTest extends Unit
 	
 	public function testCurrent()
 	{
-		expect(LanguageEnum::RU)->equals(Yii::$app->language);
+		$this->tester->assertEquals(LanguageEnum::RU, Yii::$app->language);
 		
 		$entity = Yii::$domain->lang->language->oneCurrent();
 		$this->tester->assertEntity([
@@ -25,16 +25,16 @@ class LanguageTest extends Unit
 	public function testSwitchLang()
 	{
 		Yii::$domain->lang->language->saveCurrent('en');
-		expect('en')->equals(Yii::$app->language);
+		$this->tester->assertEquals('en', Yii::$app->language);
 		
 		Yii::$domain->lang->language->saveCurrent('ru');
-		expect('ru')->equals(Yii::$app->language);
+		$this->tester->assertEquals('ru', Yii::$app->language);
 	}
 	
 	public function testSwitchInvalidLang()
 	{
 		Yii::$domain->lang->language->saveCurrent('zx');
-		expect('ru')->equals(Yii::$app->language);
+		$this->tester->assertEquals('ru', Yii::$app->language);
 	}
 	
 	public function testList()
