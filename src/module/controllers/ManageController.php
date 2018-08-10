@@ -1,7 +1,6 @@
 <?php
 namespace yii2module\lang\module\controllers;
 
-use common\enums\rbac\PermissionEnum;
 use Yii;
 use yii\data\ArrayDataProvider;
 use yii\web\Controller;

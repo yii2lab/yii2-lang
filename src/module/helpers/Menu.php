@@ -2,8 +2,8 @@
 
 namespace yii2module\lang\module\helpers;
 
-use common\enums\rbac\PermissionEnum;
 use yii2lab\extension\menu\interfaces\MenuInterface;
+use yii2module\lang\domain\enums\LangPermissionEnum;
 
 class Menu implements MenuInterface {
 	
@@ -13,7 +13,7 @@ class Menu implements MenuInterface {
 			'url' => 'lang/manage',
 			'module' => 'lang',
 			//'icon' => 'language',
-			'access' => PermissionEnum::LANG_MANAGE,
+			'access' => LangPermissionEnum::MANAGE,
 		];
 	}
 
