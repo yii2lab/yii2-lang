@@ -5,6 +5,7 @@ use Yii;
 use yii\data\ArrayDataProvider;
 use yii\web\Controller;
 use yii2lab\helpers\Behavior;
+use yii2module\lang\domain\enums\LangPermissionEnum;
 
 class ManageController extends Controller
 {
@@ -15,7 +16,7 @@ class ManageController extends Controller
 	public function behaviors()
 	{
 		return [
-			Behavior::access(PermissionEnum::LANG_MANAGE),
+			Behavior::access(LangPermissionEnum::MANAGE),
 		];
 	}
 
