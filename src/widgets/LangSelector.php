@@ -7,7 +7,7 @@ use yii\base\Widget;
 use yii\bootstrap\Dropdown;
 use yii\helpers\Html;
 use yii2lab\extension\menu\helpers\MenuHelper;
-use yii2lab\misc\enums\HtmlEnum;
+use yii2lab\extension\web\enums\HtmlEnum;
 
 class LangSelector extends Widget {
 	
