@@ -15,7 +15,7 @@ class LangSelector extends Widget {
 	 * Runs the widget
 	 */
 	public function run() {
-		$currentEntity = Yii::$domain->lang->language->oneCurrent();
+		$currentEntity = \App::$domain->lang->language->oneCurrent();
 		echo Html::a( $currentEntity->title . HtmlEnum::CARET, '#', [
 			'class' => 'dropdown-toggle',
 			'data-toggle' => 'dropdown',
@@ -31,8 +31,8 @@ class LangSelector extends Widget {
 	
 	private function collectionToMenu() {
 		$items = [];
-		$collection = Yii::$domain->lang->language->all();
-		//$currentEntity = Yii::$domain->lang->language->oneCurrent();
+		$collection = \App::$domain->lang->language->all();
+		//$currentEntity = \App::$domain->lang->language->oneCurrent();
 		foreach($collection as $entity) {
 			$items[] = [
 				'label' => $entity->title,

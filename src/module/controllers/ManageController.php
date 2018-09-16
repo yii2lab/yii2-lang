@@ -23,7 +23,7 @@ class ManageController extends Controller
 	public function actionIndex()
 	{
 		$dataProvider = new ArrayDataProvider([
-			'allModels' => Yii::$domain->lang->language->all(),
+			'allModels' => \App::$domain->lang->language->all(),
 			'sort' => [
 				'attributes' => ['title', 'code', 'locale', 'is_main'],
 			],

@@ -25,7 +25,7 @@ class DefaultController extends Controller
 	function actionChange($language) {
 		$request = Yii::$app->request;
 		if(!empty($language)) {
-			Yii::$domain->lang->language->saveCurrent($language);
+			\App::$domain->lang->language->saveCurrent($language);
 			return $this->redirect($request->referrer);
 		}
 	}

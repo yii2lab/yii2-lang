@@ -10,7 +10,7 @@ class Language extends Component
 
 	public function init()
 	{
-		Yii::$domain->lang->language->initCurrent();
+		\App::$domain->lang->language->initCurrent();
 		parent::init();
 	}
 
