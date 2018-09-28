@@ -31,6 +31,13 @@ class LangHelper {
 		return $bundle;
 	}
 	
+	public static function extractList($list) {
+		foreach($list as $name => $message) {
+			$list[$name] = self::extract($message);
+		}
+		return $list;
+	}
+	
 	public static function extract($message) {
 		if(empty($message)) {
 			return '';
