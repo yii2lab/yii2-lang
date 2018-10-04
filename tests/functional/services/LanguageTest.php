@@ -56,7 +56,7 @@ class LanguageTest extends Unit
 				'locale' => LanguageEnum::SOURCE,
 				'is_main' => false,
 			],
-		], $collection);
+		], $collection, true);
 	}
 	
 	public function testListOrderByCode()
@@ -80,7 +80,7 @@ class LanguageTest extends Unit
 				'locale' => LanguageEnum::SOURCE,
 				'is_main' => false,
 			],
-		], $collection);
+		], $collection, true);
 	}
 	
 	public function testOneByLocale()
