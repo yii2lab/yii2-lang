@@ -5,7 +5,7 @@ namespace yii2module\lang\module\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use yii2lab\helpers\Behavior;
+use yii2lab\extension\web\helpers\Behavior;
 
 class DefaultController extends Controller
 {
