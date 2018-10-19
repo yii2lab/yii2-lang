@@ -32,7 +32,7 @@ class LangSelector extends Widget {
 		return $this->collectionToMenu();
 	}
 	
-	private function collectionToMenu() {
+	protected function collectionToMenu() {
 		$items = [];
 		$collection = \App::$domain->lang->language->all();
 		//$currentEntity = \App::$domain->lang->language->oneCurrent();
