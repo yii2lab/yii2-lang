@@ -14,8 +14,11 @@ class LangSelector extends Widget {
 	/**
 	 * Runs the widget
 	 */
+
 	public function run() {
-		$currentEntity = \App::$domain->lang->language->oneCurrent();
+	    $currentEntity = \App::$domain->lang->language->oneCurrent();
+        $view = $this->getView();
+        LangSelectorAsset::register($view);
 		echo Html::a( $currentEntity->title . HtmlEnum::CARET, '#', [
 			'class' => 'dropdown-toggle',
 			'data-toggle' => 'dropdown',
@@ -29,7 +32,7 @@ class LangSelector extends Widget {
 		return $this->collectionToMenu();
 	}
 	
-	private function collectionToMenu() {
+	protected function collectionToMenu() {
 		$items = [];
 		$collection = \App::$domain->lang->language->all();
 		//$currentEntity = \App::$domain->lang->language->oneCurrent();
