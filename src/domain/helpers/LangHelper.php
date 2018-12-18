@@ -12,7 +12,6 @@ class LangHelper {
 	
 	public static function normalizeTranslation($config) {
 		$config['class'] = 'yii2module\lang\domain\i18n\PhpMessageSource';
-		$config['on missingTranslation'] = ['yii2module\lang\domain\handlers\TranslationEventHandler', 'handleMissingTranslation'];
 		return $config;
 	}
 	

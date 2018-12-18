@@ -27,9 +27,7 @@ class Domain extends \yii2lab\domain\Domain {
 				'store' => $storeDriver,
 			],
 			'services' => [
-				'language' => [
-					'translationEventHandler' => ['yii2module\lang\domain\handlers\TranslationEventHandler', 'handleMissingTranslation'],
-				],
+				'language' => [],
 			],
 		];
 	}

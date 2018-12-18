@@ -88,12 +88,12 @@ class BundleHelper {
 		if(!empty($fileMap)) {
 			$config['fileMap'] = $fileMap;
 		}
-		if(is_object(Yii::$app)) {
+		/*if(is_object(Yii::$app)) {
 			$translationEventHandler = \App::$domain->lang->language->translationEventHandler;
 			if($translationEventHandler) {
 				$config['on missingTranslation'] = $translationEventHandler;
 			}
-		}
+		}*/
 		return $config;
 	}
 	
