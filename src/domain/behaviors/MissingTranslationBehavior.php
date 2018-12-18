@@ -4,6 +4,7 @@ namespace yii2module\lang\domain\behaviors;
 
 use yii\base\Behavior;
 use yii\base\Event;
+use yii\helpers\Inflector;
 use yii\i18n\MessageSource;
 use yii\i18n\MissingTranslationEvent;
 use yii2lab\domain\enums\EventEnum;
