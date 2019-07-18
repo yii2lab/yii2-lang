@@ -1,4 +1,5 @@
 <?php
+namespace yii2module\lang;
 
 /**
  * Inherited Methods
