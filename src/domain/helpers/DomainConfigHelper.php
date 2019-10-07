@@ -58,7 +58,11 @@ class DomainConfigHelper {
 	}
 	
 	public static function isDomain($config) {
-		if(empty($config['class'])) {
+        if ($config instanceOf \Closure) {
+            return false;
+        }
+
+        if(empty($config['class'])) {
 			return false;
 		}
 		if($config['class'] == Domain::class || is_subclass_of($config['class'], Domain::class)) {
