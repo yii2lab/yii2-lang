@@ -12,13 +12,14 @@ class LanguageTest extends Unit
 	
 	public function testCurrent()
 	{
-		$this->tester->assertEquals(LanguageEnum::RU, Yii::$app->language);
+
+		$this->tester->assertEquals(LanguageEnum::EN, Yii::$app->language);
 		
 		$entity = \App::$domain->lang->language->oneCurrent();
 		$this->tester->assertEntity([
-			'code' => 'ru',
-			'locale' => LanguageEnum::RU,
-			'is_main' => true,
+			'code' => 'en',
+			'locale' => LanguageEnum::EN,
+			'is_main' => false,
 		], $entity);
 	}
 	

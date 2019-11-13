@@ -5,7 +5,7 @@ use yii2lab\test\helpers\TestHelper;
 use yii2module\lang\domain\enums\LanguageEnum;
 
 $config = [
-	'language' => LanguageEnum::RU, // current Language
+	'language' => LanguageEnum::EN, // current Language
 	'bootstrap' => ['log', 'language', 'queue'],
 	'components' => [
 		'language' => 'yii2module\lang\domain\components\Language',

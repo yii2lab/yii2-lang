@@ -6,9 +6,9 @@ use yii2lab\extension\enum\base\BaseEnum;
 
 class LanguageEnum extends BaseEnum {
 	
-	const RU = 'ru-RU';
-	const EN = 'en-UK';
-	const SOURCE = 'xx-XX';
+	const RU = 'ru';
+	const EN = 'en';
+	const SOURCE = 'xx';
 	
 	public static function code($locale) {
 		$localeArr = explode('-', $locale);
